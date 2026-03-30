@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIUT 2026 · Crew Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --text: #e8e4dc;
+    --muted: #777;
+    --jon: #e8864a;
+    --dan: #6ab8c8;
+    --accent: #c8b96a;
+    --green: #6ab87a;
+    --red: #c86a6a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+  .header {
+    padding: 28px 18px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-label { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 26px; line-height: 1.1; }
+  .header h1 span { color: var(--accent); }
+  .header-rows { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+  .header-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+  .swatch { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .swatch-jon { background: var(--jon); }
+  .swatch-dan { background: var(--dan); }
+  .header-row strong { color: var(--text); }
+
+  .station { margin: 14px 10px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .station-hdr {
+    padding: 12px 16px 10px; background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .station-num { font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+  .station-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; }
+  .station-facts { text-align: right; font-size: 10px; color: var(--muted); line-height: 1.7; }
+  .station-facts strong { color: var(--accent); font-size: 13px; display: block; }
+
+  .cutoff-bar {
+    padding: 7px 16px; background: rgba(200,106,106,0.08);
+    border-bottom: 1px solid rgba(200,106,106,0.2);
+    font-size: 10px; color: var(--red); letter-spacing: 0.04em;
+  }
+
+  .runner-block { border-bottom: 1px solid var(--border); }
+  .runner-block:last-of-type { border-bottom: none; }
+  .runner-hdr {
+    padding: 9px 16px 7px; display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .runner-hdr-name { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .runner-hdr-sub { font-size: 10px; color: var(--muted); margin-left: auto; }
+
+  .pace-table { padding: 8px 16px 10px; display: flex; flex-direction: column; gap: 5px; }
+  .pace-row { display: grid; grid-template-columns: 52px 68px 1fr; align-items: center; gap: 0; font-size: 12px; }
+  .pace-label { font-size: 10px; color: var(--muted); }
+  .pace-clock { font-weight: 500; }
+  .pace-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .pace-bar { height: 100%; border-radius: 2px; }
+
+  .runner-nexts { padding: 8px 16px 12px; background: var(--surface); }
+  .nexts-title { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .next-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .next-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; }
+  .next-box-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  .next-box-dest { font-size: 11px; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .next-box-km { font-size: 14px; font-weight: 500; color: var(--accent); }
+  .next-box-km span { font-size: 10px; color: var(--muted); font-weight: 400; }
+  .next-box-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+  .station-notes {
+    padding: 10px 16px 12px; font-size: 11px; color: var(--muted);
+    line-height: 1.65; border-top: 1px solid var(--border); font-style: italic;
+  }
+  .map-wrap { padding: 12px 16px 14px; border-top: 1px solid var(--border); }
+  .map-link {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 9px; border: 1px solid var(--border); border-radius: 6px;
+    color: var(--muted); text-decoration: none; font-size: 10px;
+    letter-spacing: 0.1em; transition: all 0.15s;
+  }
+  .map-link:hover { border-color: var(--accent); color: var(--accent); }
+  .map-icon { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+
+  .connector {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 24px; color: var(--muted);
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .connector::before, .connector::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .absent-note { padding: 10px 16px 14px; font-size: 11px; color: var(--muted); }
+
+  .crew-instructions {
+    border-top: 1px solid var(--border);
+    padding: 12px 16px 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .crew-instr-title {
+    font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .crew-instr-block {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    overflow: hidden;
+  }
+  .crew-instr-runner {
+    padding: 6px 12px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 7px;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .crew-instr-body {
+    padding: 10px 12px; min-height: 52px;
+    font-size: 11px; color: var(--muted); font-style: italic;
+    line-height: 1.6;
+  }
+
+  .footer {
+    margin: 16px 10px 0; padding: 14px 16px;
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 10px; color: var(--muted); line-height: 1.9;
+  }
+  .footer strong { color: var(--text); }
+  .finish-row { display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">MIUT 2026 · April 26</div>
+  <h1>Crew <span>Guide</span></h1>
+  <div class="header-rows">
+    <div class="header-row">
+      <div class="swatch swatch-jon"></div>
+      <strong>Jon</strong>&nbsp; MIUT 115 &nbsp;·&nbsp; Start 00:00 Apr 26
+    </div>
+    <div class="header-row">
+      <div class="swatch swatch-dan"></div>
+      <strong>Danielle</strong>&nbsp; Advanced 76.8km &nbsp;·&nbsp; Start 07:00 Apr 26
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════ STOP 1: ESTANQUINHOS ══════════════════════ -->
+<div class="station">
+  <div class="station-hdr">
+    <div>
+      <div class="station-num">Crew Stop 1 of 3</div>
+      <div class="station-name">Estanquinhos</div>
+    </div>
+    <div class="station-facts">
+      <strong>1,580 m</strong>
+      Km 29.9 · Jon only
+    </div>
+  </div>
+  <div class="cutoff-bar">⚑ Cut-off 09:15 &nbsp;·&nbsp; L S AP + Méd. &nbsp;·&nbsp; No drop bag</div>
+
+  <div class="runner-block">
+    <div class="runner-hdr">
+      <div class="swatch swatch-jon"></div>
+      <div class="runner-hdr-name" style="color:var(--jon)">Jon</div>
+      <div class="runner-hdr-sub">km 29.9 of 108.9</div>
+    </div>
+    <div class="pace-table">
+      <div class="pace-row">
+        <div class="pace-label">16h pace</div>
+        <div class="pace-clock">04:28</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:27%;background:var(--jon)"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">17h pace</div>
+        <div class="pace-clock">04:45</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:29%;background:var(--jon);opacity:.7"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">18h pace</div>
+        <div class="pace-clock">05:01</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:31%;background:var(--jon);opacity:.45"></div></div>
+      </div>
+    </div>
+    <div class="runner-nexts">
+      <div class="nexts-title">What's next for Jon</div>
+      <div class="next-grid">
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next aid</div>
+          <div class="next-box-dest">Chão dos Louros</div>
+          <div class="next-box-km">14.0 <span>km</span></div>
+          <div class="next-box-sub">490↑ &nbsp;1,270↓</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~1h 50m – 2h 03m</div>
+        </div>
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next crew</div>
+          <div class="next-box-dest">Curral das Freiras</div>
+          <div class="next-box-km">28.5 <span>km</span></div>
+          <div class="next-box-sub">1,785↑ &nbsp;2,715↓</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~3h 57m – 4h 26m</div>
+        </div>
+      </div>
+    </div>
+    <div class="crew-instr-block" style="margin:0 16px 14px">
+      <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
+      <div class="crew-instr-body">TBD</div>
+    </div>
+  </div>
+
+  <div class="runner-block">
+    <div class="runner-hdr">
+      <div class="swatch swatch-dan"></div>
+      <div class="runner-hdr-name" style="color:var(--dan)">Danielle</div>
+      <div class="runner-hdr-sub" style="color:var(--muted)">Not on this course</div>
+    </div>
+    <div class="absent-note">Danielle starts at São Vicente on the Advanced course — she does not pass through Estanquinhos. Her first crew access is Curral das Freiras (km 26.3), arriving ~11:12–11:51.</div>
+  </div>
+
+  <div class="map-wrap">
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.7450,-16.9300" target="_blank">
+      <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Open in Google Maps
+    </a>
+  </div>
+</div>
+
+<div class="connector">↓ &nbsp; 28.5 km to next crew stop &nbsp; ↓</div>
+
+
+<!-- ══════════════════════ STOP 2: CURRAL DAS FREIRAS ══════════════════════ -->
+<div class="station">
+  <div class="station-hdr">
+    <div>
+      <div class="station-num">Crew Stop 2 of 3</div>
+      <div class="station-name">Curral das Freiras</div>
+    </div>
+    <div class="station-facts">
+      <strong>670 m</strong>
+      Km 58.4 (Jon) · 26.3 (Dan)
+    </div>
+  </div>
+  <div class="cutoff-bar">⚑ Cut-off 16:30 &nbsp;·&nbsp; L S AP + Méd. BAG &nbsp;·&nbsp; Drop bag ✓ &nbsp;·&nbsp; Both runners</div>
+
+  <div class="runner-block">
+    <div class="runner-hdr">
+      <div class="swatch swatch-jon"></div>
+      <div class="runner-hdr-name" style="color:var(--jon)">Jon</div>
+      <div class="runner-hdr-sub">km 58.4 of 108.9 — halfway</div>
+    </div>
+    <div class="pace-table">
+      <div class="pace-row">
+        <div class="pace-label">16h pace</div>
+        <div class="pace-clock">08:29</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:54%;background:var(--jon)"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">17h pace</div>
+        <div class="pace-clock">09:01</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:57%;background:var(--jon);opacity:.7"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">18h pace</div>
+        <div class="pace-clock">09:33</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:60%;background:var(--jon);opacity:.45"></div></div>
+      </div>
+    </div>
+    <div class="runner-nexts">
+      <div class="nexts-title">What's next for Jon</div>
+      <div class="next-grid">
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next aid</div>
+          <div class="next-box-dest">Pico Ruivo</div>
+          <div class="next-box-km">11.0 <span>km</span></div>
+          <div class="next-box-sub">1,430↑ &nbsp;320↓ · biggest climb</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~1h 43m – 1h 56m</div>
+        </div>
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next crew</div>
+          <div class="next-box-dest">Chão da Lagoa</div>
+          <div class="next-box-km">20.6 <span>km</span></div>
+          <div class="next-box-sub">1,910↑ &nbsp;1,080↓</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~3h 04m – 3h 27m</div>
+        </div>
+      </div>
+    </div>
+    <div class="crew-instr-block" style="margin:0 16px 14px">
+      <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
+      <div class="crew-instr-body">First crew stop.<br>· Gear check<br>· Drop warm clothes / change clothes if weather is warm<br>· Fresh set of shoes &amp; socks<br>· Rain jacket if needed<br>· Swap to fresh shirt<br>· Drop headlamp<br>· 4× PF90s</div>
+    </div>
+  </div>
+
+  <div class="runner-block">
+    <div class="runner-hdr">
+      <div class="swatch swatch-dan"></div>
+      <div class="runner-hdr-name" style="color:var(--dan)">Danielle</div>
+      <div class="runner-hdr-sub">km 26.3 of 76.8 — ⅓ done</div>
+    </div>
+    <div class="pace-table">
+      <div class="pace-row">
+        <div class="pace-label">13h pace</div>
+        <div class="pace-clock">11:12</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:34%;background:var(--dan)"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">14h pace</div>
+        <div class="pace-clock">11:32</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:36%;background:var(--dan);opacity:.7"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">15h pace</div>
+        <div class="pace-clock">11:51</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:38%;background:var(--dan);opacity:.45"></div></div>
+      </div>
+    </div>
+    <div class="runner-nexts">
+      <div class="nexts-title">What's next for Danielle</div>
+      <div class="next-grid">
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next aid</div>
+          <div class="next-box-dest">Pico Ruivo</div>
+          <div class="next-box-km">11.0 <span>km</span></div>
+          <div class="next-box-sub">1,430↑ &nbsp;320↓ · biggest climb</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~1h 53m – 2h 10m</div>
+        </div>
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next crew</div>
+          <div class="next-box-dest">Chão da Lagoa</div>
+          <div class="next-box-km">20.6 <span>km</span></div>
+          <div class="next-box-sub">1,910↑ &nbsp;1,080↓</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~3h 32m – 4h 05m</div>
+        </div>
+      </div>
+    </div>
+    <div class="crew-instr-block" style="margin:0 16px 14px">
+      <div class="crew-instr-runner"><div class="swatch swatch-dan"></div> Crew Instructions</div>
+      <div class="crew-instr-body">TBD</div>
+    </div>
+  </div>
+
+  <div class="map-wrap">
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.7200,-16.9700" target="_blank">
+      <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Open in Google Maps
+    </a>
+  </div>
+</div>
+
+<div class="connector">↓ &nbsp; 20.6 km to next crew stop &nbsp; ↓</div>
+
+
+<!-- ══════════════════════ STOP 3: CHÃO DA LAGOA ══════════════════════ -->
+<div class="station">
+  <div class="station-hdr">
+    <div>
+      <div class="station-num">Crew Stop 3 of 3</div>
+      <div class="station-name">Chão da Lagoa</div>
+    </div>
+    <div class="station-facts">
+      <strong>1,480 m</strong>
+      Km 79 (Jon) · 46.9 (Dan)
+    </div>
+  </div>
+  <div class="cutoff-bar">⚑ Cut-off 23:30 &nbsp;·&nbsp; L S AP + Méd. &nbsp;·&nbsp; Both runners</div>
+
+  <div class="runner-block">
+    <div class="runner-hdr">
+      <div class="swatch swatch-jon"></div>
+      <div class="runner-hdr-name" style="color:var(--jon)">Jon</div>
+      <div class="runner-hdr-sub">km 79 of 108.9 — 30 km left</div>
+    </div>
+    <div class="pace-table">
+      <div class="pace-row">
+        <div class="pace-label">16h pace</div>
+        <div class="pace-clock">11:48</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:73%;background:var(--jon)"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">17h pace</div>
+        <div class="pace-clock">12:33</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:78%;background:var(--jon);opacity:.7"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">18h pace</div>
+        <div class="pace-clock">13:17</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:83%;background:var(--jon);opacity:.45"></div></div>
+      </div>
+    </div>
+    <div class="runner-nexts">
+      <div class="nexts-title">What's next for Jon — 29.9 km to finish</div>
+      <div class="next-grid">
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next aid</div>
+          <div class="next-box-dest">Portela</div>
+          <div class="next-box-km">11.9 <span>km</span></div>
+          <div class="next-box-sub">95↑ &nbsp;975↓</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~1h 37m – 1h 49m</div>
+        </div>
+        <div class="next-box">
+          <div class="next-box-lbl">→ Finish</div>
+          <div class="next-box-dest">Machico</div>
+          <div class="next-box-km">29.9 <span>km</span></div>
+          <div class="next-box-sub">360↑ &nbsp;2,835↓ remain</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~4h 00m – 4h 30m</div>
+        </div>
+      </div>
+    </div>
+    <div class="crew-instr-block" style="margin:0 16px 14px">
+      <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
+      <div class="crew-instr-body">· PF90s (caffeinated)<br>· Drop poles</div>
+    </div>
+  </div>
+
+  <div class="runner-block">
+    <div class="runner-hdr">
+      <div class="swatch swatch-dan"></div>
+      <div class="runner-hdr-name" style="color:var(--dan)">Danielle</div>
+      <div class="runner-hdr-sub">km 46.9 of 76.8 — 30 km left</div>
+    </div>
+    <div class="pace-table">
+      <div class="pace-row">
+        <div class="pace-label">13h pace</div>
+        <div class="pace-clock">14:58</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:61%;background:var(--dan)"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">14h pace</div>
+        <div class="pace-clock">15:35</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:66%;background:var(--dan);opacity:.7"></div></div>
+      </div>
+      <div class="pace-row">
+        <div class="pace-label">15h pace</div>
+        <div class="pace-clock">16:12</div>
+        <div class="pace-bar-wrap"><div class="pace-bar" style="width:71%;background:var(--dan);opacity:.45"></div></div>
+      </div>
+    </div>
+    <div class="runner-nexts">
+      <div class="nexts-title">What's next for Danielle — 29.9 km to finish</div>
+      <div class="next-grid">
+        <div class="next-box">
+          <div class="next-box-lbl">→ Next aid</div>
+          <div class="next-box-dest">Portela</div>
+          <div class="next-box-km">11.9 <span>km</span></div>
+          <div class="next-box-sub">95↑ &nbsp;935↓</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~2h 02m – 2h 21m</div>
+        </div>
+        <div class="next-box">
+          <div class="next-box-lbl">→ Finish</div>
+          <div class="next-box-dest">Machico</div>
+          <div class="next-box-km">29.9 <span>km</span></div>
+          <div class="next-box-sub">360↑ &nbsp;2,720↓ remain</div>
+          <div class="next-box-sub" style="color:var(--accent);margin-top:3px">~4h 50m – 5h 35m</div>
+        </div>
+      </div>
+    </div>
+    <div class="crew-instr-block" style="margin:0 16px 14px">
+      <div class="crew-instr-runner"><div class="swatch swatch-dan"></div> Crew Instructions</div>
+      <div class="crew-instr-body">TBD</div>
+    </div>
+  </div>
+
+  <div class="map-wrap">
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.71183,-16.91083" target="_blank">
+      <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Open in Google Maps
+    </a>
+  </div>
+</div>
+
+
+<div class="footer">
+  <strong>Finish — Forum Machico</strong><br>
+  <div class="finish-row"><div class="swatch swatch-jon"></div> Jon: &nbsp;16:00 (16h) &nbsp;·&nbsp; 17:00 (17h) &nbsp;·&nbsp; 18:00 (18h)</div>
+  <div class="finish-row"><div class="swatch swatch-dan"></div> Danielle: &nbsp;20:00 (13h) &nbsp;·&nbsp; 21:00 (14h) &nbsp;·&nbsp; 22:00 (15h)</div>
+  <br>
+  All times are clock times, April 26. Jon starts 00:00 · Danielle starts 07:00.<br>
+  Progress bars show % of total race distance completed at each station.
+</div>
+
+</body>
+</html>
