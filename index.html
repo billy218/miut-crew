@@ -255,17 +255,23 @@
     width: 2px; background: var(--bg);
     transform: translateX(-50%); border-radius: 1px;
   }
-  /* Axis labels below the track, aligned to tick positions */
-  .pace-strip-axis {
-    position: relative; height: 30px; margin-top: 5px;
+  /* Scenario labels above the track (16h / 17h / 18h etc.) */
+  .pace-strip-scenarios {
+    position: relative; height: 13px; margin-bottom: 3px;
   }
-  .pace-strip-axlbl {
+  .pace-strip-scen-lbl {
     position: absolute; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 1px;
-    text-align: center;
+    font-size: 9px; color: var(--muted); letter-spacing: 0.06em;
+    white-space: nowrap;
   }
-  .ps-scenario { font-size: 9px; color: var(--muted); letter-spacing: 0.06em; }
-  .ps-time { font-size: 11px; font-weight: 500; }
+  /* Clock time axis below the track */
+  .pace-strip-axis {
+    position: relative; height: 14px; margin-top: 4px;
+  }
+  .pace-strip-axtime {
+    position: absolute; transform: translateX(-50%);
+    font-size: 11px; font-weight: 500; white-space: nowrap;
+  }
 
   /* ── Crew instructions ── */
   .crew-instr-block {
@@ -541,6 +547,11 @@
       <div class="runner-hdr-sub">km 29.9 of 108.9</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:32.3%">16h</div>
+        <div class="pace-strip-scen-lbl" style="left:50.6%">17h</div>
+        <div class="pace-strip-scen-lbl" style="left:67.8%">18h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="billy" data-idx="3" data-t0="268" data-t2="301"
            data-track-start="238" data-track-end="331">
@@ -551,9 +562,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:32.3%"><span class="ps-scenario">16h</span><span class="ps-time">04:28</span></div>
-        <div class="pace-strip-axlbl" style="left:50.6%"><span class="ps-scenario">17h</span><span class="ps-time">04:45</span></div>
-        <div class="pace-strip-axlbl" style="left:67.8%"><span class="ps-scenario">18h</span><span class="ps-time">05:01</span></div>
+        <div class="pace-strip-axtime" style="left:32.3%">04:28</div>
+        <div class="pace-strip-axtime" style="left:50.6%">04:45</div>
+        <div class="pace-strip-axtime" style="left:67.8%">05:01</div>
       </div>
     </div>
     <div class="proj-time" data-runner="billy" data-station="estanquinhos"></div>
@@ -669,6 +680,11 @@
       <div class="runner-hdr-sub">km 58.4 of 108.9 — halfway</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:24.2%">16h</div>
+        <div class="pace-strip-scen-lbl" style="left:50%">17h</div>
+        <div class="pace-strip-scen-lbl" style="left:75.8%">18h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="billy" data-idx="5" data-t0="509" data-t2="573"
            data-track-start="479" data-track-end="603">
@@ -679,9 +695,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:24.2%"><span class="ps-scenario">16h</span><span class="ps-time">08:29</span></div>
-        <div class="pace-strip-axlbl" style="left:50%"><span class="ps-scenario">17h</span><span class="ps-time">09:01</span></div>
-        <div class="pace-strip-axlbl" style="left:75.8%"><span class="ps-scenario">18h</span><span class="ps-time">09:33</span></div>
+        <div class="pace-strip-axtime" style="left:24.2%">08:29</div>
+        <div class="pace-strip-axtime" style="left:50%">09:01</div>
+        <div class="pace-strip-axtime" style="left:75.8%">09:33</div>
       </div>
     </div>
     <div class="proj-time" data-runner="billy" data-station="curral"></div>
@@ -698,6 +714,11 @@
       <div class="runner-hdr-sub">km 26.3 of 76.8 — ⅓ done</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:30.3%">13h</div>
+        <div class="pace-strip-scen-lbl" style="left:50.5%">14h</div>
+        <div class="pace-strip-scen-lbl" style="left:69.7%">15h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="danielle" data-idx="2" data-t0="672" data-t2="711"
            data-track-start="642" data-track-end="741">
@@ -708,9 +729,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:30.3%"><span class="ps-scenario">13h</span><span class="ps-time">11:12</span></div>
-        <div class="pace-strip-axlbl" style="left:50.5%"><span class="ps-scenario">14h</span><span class="ps-time">11:32</span></div>
-        <div class="pace-strip-axlbl" style="left:69.7%"><span class="ps-scenario">15h</span><span class="ps-time">11:51</span></div>
+        <div class="pace-strip-axtime" style="left:30.3%">11:12</div>
+        <div class="pace-strip-axtime" style="left:50.5%">11:32</div>
+        <div class="pace-strip-axtime" style="left:69.7%">11:51</div>
       </div>
     </div>
     <div class="proj-time" data-runner="danielle" data-station="curral"></div>
@@ -823,6 +844,11 @@
       <div class="runner-hdr-sub">km 79 of 108.9 — 30 km left</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:20.1%">16h</div>
+        <div class="pace-strip-scen-lbl" style="left:50.3%">17h</div>
+        <div class="pace-strip-scen-lbl" style="left:79.9%">18h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="billy" data-idx="7" data-t0="708" data-t2="797"
            data-track-start="678" data-track-end="827">
@@ -833,9 +859,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:20.1%"><span class="ps-scenario">16h</span><span class="ps-time">11:48</span></div>
-        <div class="pace-strip-axlbl" style="left:50.3%"><span class="ps-scenario">17h</span><span class="ps-time">12:33</span></div>
-        <div class="pace-strip-axlbl" style="left:79.9%"><span class="ps-scenario">18h</span><span class="ps-time">13:17</span></div>
+        <div class="pace-strip-axtime" style="left:20.1%">11:48</div>
+        <div class="pace-strip-axtime" style="left:50.3%">12:33</div>
+        <div class="pace-strip-axtime" style="left:79.9%">13:17</div>
       </div>
     </div>
     <div class="proj-time" data-runner="billy" data-station="lagoa"></div>
@@ -852,6 +878,11 @@
       <div class="runner-hdr-sub">km 26.3 of 56.2 — halfway</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:24.2%">7.5h</div>
+        <div class="pace-strip-scen-lbl" style="left:41.9%">8h</div>
+        <div class="pace-strip-scen-lbl" style="left:75.8%">9h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="heather" data-idx="3" data-t0="857" data-t2="921"
            data-track-start="827" data-track-end="951">
@@ -862,9 +893,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:24.2%"><span class="ps-scenario">7.5h</span><span class="ps-time">14:17</span></div>
-        <div class="pace-strip-axlbl" style="left:41.9%"><span class="ps-scenario">8h</span><span class="ps-time">14:39</span></div>
-        <div class="pace-strip-axlbl" style="left:75.8%"><span class="ps-scenario">9h</span><span class="ps-time">15:21</span></div>
+        <div class="pace-strip-axtime" style="left:24.2%">14:17</div>
+        <div class="pace-strip-axtime" style="left:41.9%">14:39</div>
+        <div class="pace-strip-axtime" style="left:75.8%">15:21</div>
       </div>
     </div>
     <div class="proj-time" data-runner="heather" data-station="lagoa"></div>
@@ -881,6 +912,11 @@
       <div class="runner-hdr-sub">km 46.9 of 76.8 — 30 km left</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:22.4%">13h</div>
+        <div class="pace-strip-scen-lbl" style="left:50%">14h</div>
+        <div class="pace-strip-scen-lbl" style="left:77.6%">15h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="danielle" data-idx="4" data-t0="898" data-t2="972"
            data-track-start="868" data-track-end="1002">
@@ -891,9 +927,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:22.4%"><span class="ps-scenario">13h</span><span class="ps-time">14:58</span></div>
-        <div class="pace-strip-axlbl" style="left:50%"><span class="ps-scenario">14h</span><span class="ps-time">15:35</span></div>
-        <div class="pace-strip-axlbl" style="left:77.6%"><span class="ps-scenario">15h</span><span class="ps-time">16:12</span></div>
+        <div class="pace-strip-axtime" style="left:22.4%">14:58</div>
+        <div class="pace-strip-axtime" style="left:50%">15:35</div>
+        <div class="pace-strip-axtime" style="left:77.6%">16:12</div>
       </div>
     </div>
     <div class="proj-time" data-runner="danielle" data-station="lagoa"></div>
@@ -990,6 +1026,11 @@
       <div class="runner-hdr-sub">km 43.3 of 56.2 — 12.9 km left</div>
     </div>
     <div class="pace-strip">
+      <div class="pace-strip-scenarios">
+        <div class="pace-strip-scen-lbl" style="left:21.6%">7.5h</div>
+        <div class="pace-strip-scen-lbl" style="left:40.3%">8h</div>
+        <div class="pace-strip-scen-lbl" style="left:78.4%">9h</div>
+      </div>
       <div class="pace-strip-track"
            data-runner="heather" data-idx="5" data-t0="938" data-t2="1017"
            data-track-start="908" data-track-end="1047">
@@ -1000,9 +1041,9 @@
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axlbl" style="left:21.6%"><span class="ps-scenario">7.5h</span><span class="ps-time">15:38</span></div>
-        <div class="pace-strip-axlbl" style="left:40.3%"><span class="ps-scenario">8h</span><span class="ps-time">16:04</span></div>
-        <div class="pace-strip-axlbl" style="left:78.4%"><span class="ps-scenario">9h</span><span class="ps-time">16:57</span></div>
+        <div class="pace-strip-axtime" style="left:21.6%">15:38</div>
+        <div class="pace-strip-axtime" style="left:40.3%">16:04</div>
+        <div class="pace-strip-axtime" style="left:78.4%">16:57</div>
       </div>
     </div>
     <div class="proj-time" data-runner="heather" data-station="larano"></div>
