@@ -44,6 +44,101 @@
   .swatch-heather { background: var(--heather); }
   .header-row strong { color: var(--text); }
 
+  /* ── Live Tracking panel ── */
+  .tracking-panel {
+    margin: 14px 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .tracking-toggle {
+    width: 100%; padding: 11px 16px;
+    background: var(--surface2); border: none;
+    color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tracking-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .tracking-dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .tracking-toggle-hint {
+    flex: 1; font-size: 9px; color: var(--muted); letter-spacing: 0.08em;
+  }
+  .tracking-arrow { font-size: 14px; color: var(--muted); transition: transform 0.2s; line-height: 1; }
+  .tracking-arrow.open { transform: rotate(90deg); }
+  .tracking-body { display: none; }
+  .tracking-runner-hdr {
+    padding: 8px 16px 6px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .tracking-runner-sub {
+    font-size: 9px; color: var(--muted);
+    text-transform: none; letter-spacing: 0.04em; margin-left: auto;
+  }
+  .tracking-row {
+    display: flex; align-items: center;
+    padding: 7px 16px; border-bottom: 1px solid var(--border); gap: 8px;
+  }
+  .tracking-cp { flex: 1; font-size: 11px; color: var(--text); }
+  .tracking-km { font-size: 9px; color: var(--muted); white-space: nowrap; }
+  .tracking-input {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 5px; color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    padding: 4px 6px; width: 84px; text-align: center;
+  }
+  .tracking-input:focus { outline: none; border-color: var(--accent); }
+  .tracking-input.has-value { border-color: var(--accent); color: var(--accent); }
+  .tracking-clear {
+    padding: 10px 16px; border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end;
+  }
+  .tracking-clear button {
+    background: none; border: 1px solid var(--border);
+    border-radius: 5px; color: var(--muted);
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    padding: 5px 12px; cursor: pointer; letter-spacing: 0.06em;
+  }
+  .tracking-clear button:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── Projection markers ── */
+  .arrival-tl-proj {
+    position: absolute; top: -7px; bottom: -7px; width: 2px;
+    transform: translateX(-50%); border-radius: 1px;
+    background: #fff;
+    box-shadow: 0 0 6px 1px rgba(255,255,255,0.4);
+    z-index: 3; pointer-events: none;
+  }
+  .arrival-tl-proj::before {
+    content: '';
+    position: absolute; bottom: calc(100% + 2px); left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #fff;
+  }
+  .pace-strip-proj {
+    position: absolute; top: -5px; bottom: -5px; width: 2px;
+    transform: translateX(-50%); border-radius: 1px;
+    background: #fff;
+    box-shadow: 0 0 5px 1px rgba(255,255,255,0.35);
+    z-index: 3; pointer-events: none;
+  }
+  .proj-time {
+    padding: 2px 16px 8px;
+    font-size: 10px; color: var(--accent); letter-spacing: 0.04em;
+  }
+  .proj-time:empty { display: none; }
+
   /* ── Station card ── */
   .station { margin: 14px 10px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .station-hdr {
@@ -118,6 +213,10 @@
     background: repeating-linear-gradient(to right, var(--muted) 0, var(--muted) 3px, transparent 3px, transparent 7px);
     opacity: 0.7;
   }
+  .tl-legend-proj {
+    display: inline-block; width: 2px; height: 10px; border-radius: 1px;
+    background: #fff; box-shadow: 0 0 4px rgba(255,255,255,0.5);
+  }
 
   /* ── Shared "what's next" ── */
   .shared-nexts { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); }
@@ -149,7 +248,6 @@
   .pace-strip-labels span { flex: 1; }
   .pace-strip-labels span:nth-child(2) { text-align: center; }
   .pace-strip-labels span:last-child  { text-align: right; }
-  /* Bar mirrors the overview style; ticks are dark notches cut through it */
   .pace-strip-bar {
     position: relative; height: 6px; border-radius: 3px; overflow: visible;
   }
@@ -222,6 +320,150 @@
 </div>
 
 
+<!-- ══════════════════════ LIVE TRACKING PANEL ══════════════════════ -->
+<div class="tracking-panel">
+  <button class="tracking-toggle" onclick="toggleTracking()">
+    <div class="tracking-dot" id="tracking-dot"></div>
+    <span>Live Tracking</span>
+    <span class="tracking-toggle-hint" id="tracking-hint">enter checkpoint times to project arrival</span>
+    <span class="tracking-arrow" id="tracking-arrow">›</span>
+  </button>
+  <div class="tracking-body" id="tracking-body">
+
+    <!-- Billy -->
+    <div class="tracking-runner">
+      <div class="tracking-runner-hdr">
+        <div class="swatch swatch-jon"></div>
+        <span style="color:var(--jon)">Billy</span>
+        <span class="tracking-runner-sub">MIUT 115 · start 00:00</span>
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Fanal</span>
+        <span class="tracking-km">km 12.3</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="1" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Chão da Ribeira</span>
+        <span class="tracking-km">km 20.2</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="2" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Estanquinhos</span>
+        <span class="tracking-km">km 29.9</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="3" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Chão dos Louros</span>
+        <span class="tracking-km">km 43.9</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="4" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Curral das Freiras</span>
+        <span class="tracking-km">km 58.4</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="5" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Pico Ruivo</span>
+        <span class="tracking-km">km 69.4</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="6" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Chão da Lagoa</span>
+        <span class="tracking-km">km 79.0</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="7" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Portela</span>
+        <span class="tracking-km">km 90.9</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="8" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Larano</span>
+        <span class="tracking-km">km 96.0</span>
+        <input class="tracking-input" type="time" data-runner="billy" data-idx="9" oninput="handleInput(this)">
+      </div>
+    </div>
+
+    <!-- Danielle -->
+    <div class="tracking-runner">
+      <div class="tracking-runner-hdr">
+        <div class="swatch swatch-dan"></div>
+        <span style="color:var(--dan)">Danielle</span>
+        <span class="tracking-runner-sub">Advanced · start 07:00</span>
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Chão dos Louros</span>
+        <span class="tracking-km">km 11.8</span>
+        <input class="tracking-input" type="time" data-runner="danielle" data-idx="1" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Curral das Freiras</span>
+        <span class="tracking-km">km 26.3</span>
+        <input class="tracking-input" type="time" data-runner="danielle" data-idx="2" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Pico Ruivo</span>
+        <span class="tracking-km">km 37.3</span>
+        <input class="tracking-input" type="time" data-runner="danielle" data-idx="3" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Chão da Lagoa</span>
+        <span class="tracking-km">km 46.9</span>
+        <input class="tracking-input" type="time" data-runner="danielle" data-idx="4" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Portela</span>
+        <span class="tracking-km">km 58.8</span>
+        <input class="tracking-input" type="time" data-runner="danielle" data-idx="5" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Larano</span>
+        <span class="tracking-km">km 63.9</span>
+        <input class="tracking-input" type="time" data-runner="danielle" data-idx="6" oninput="handleInput(this)">
+      </div>
+    </div>
+
+    <!-- Heather -->
+    <div class="tracking-runner">
+      <div class="tracking-runner-hdr">
+        <div class="swatch swatch-heather"></div>
+        <span style="color:var(--heather)">Heather</span>
+        <span class="tracking-runner-sub">Discover · start 09:00</span>
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Lombo do Urzal</span>
+        <span class="tracking-km">km 6.2</span>
+        <input class="tracking-input" type="time" data-runner="heather" data-idx="1" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Pico Ruivo</span>
+        <span class="tracking-km">km 16.7</span>
+        <input class="tracking-input" type="time" data-runner="heather" data-idx="2" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Chão da Lagoa</span>
+        <span class="tracking-km">km 26.3</span>
+        <input class="tracking-input" type="time" data-runner="heather" data-idx="3" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Portela</span>
+        <span class="tracking-km">km 38.2</span>
+        <input class="tracking-input" type="time" data-runner="heather" data-idx="4" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-row">
+        <span class="tracking-cp">Larano</span>
+        <span class="tracking-km">km 43.3</span>
+        <input class="tracking-input" type="time" data-runner="heather" data-idx="5" oninput="handleInput(this)">
+      </div>
+    </div>
+
+    <div class="tracking-clear">
+      <button onclick="clearAll()">Clear all data</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- ══════════════════════ STOP 1: ESTANQUINHOS ══════════════════════ -->
 <div class="station">
   <div class="station-hdr">
@@ -247,7 +489,9 @@
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
-        <div class="arrival-tl-track">
+        <div class="arrival-tl-track"
+             data-runner="billy" data-idx="3"
+             data-scale-start="240" data-scale-end="600">
           <div class="arrival-tl-bar" style="left:7.8%;width:9.2%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" style="--c:var(--jon);left:74.7%;width:17.8%"></div>
           <div class="arrival-tl-cutoff" style="left:87.5%"></div>
@@ -263,6 +507,7 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop</span>
+      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
   </div>
 
@@ -294,16 +539,18 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-labels"><span>16h pace</span><span>17h pace</span><span>18h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--jon)">
+      <div class="pace-strip-bar" style="background:var(--jon)"
+           data-runner="billy" data-idx="3" data-t0="268" data-t2="301">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
       <div class="pace-strip-times"><span>04:28</span><span>04:45</span><span>05:01</span></div>
     </div>
+    <div class="proj-time" data-runner="billy" data-station="estanquinhos"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
-      <div class="crew-instr-body">TBD</div>
+      <div class="crew-instr-body">PF90s handoff only.</div>
     </div>
   </div>
 
@@ -322,7 +569,7 @@
       <div class="runner-hdr-name" style="color:var(--heather)">Heather</div>
       <div class="runner-hdr-sub">Not on this course</div>
     </div>
-    <div class="absent-note">Heather's Discover course starts at Boaventura. Her first crew access is Chão da Lagoa (km 26.3), arriving ~13:23–13:58.</div>
+    <div class="absent-note">Heather's Discover course starts at Boaventura. Her first crew access is Chão da Lagoa (km 26.3), arriving ~14:17–15:21.</div>
   </div>
 </div>
 
@@ -354,7 +601,9 @@
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
-        <div class="arrival-tl-track">
+        <div class="arrival-tl-track"
+             data-runner="billy" data-idx="5"
+             data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:5.4%;width:11.9%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" style="--c:var(--jon);left:42.2%;width:16.5%"></div>
           <div class="arrival-tl-cutoff" style="left:94.4%"></div>
@@ -362,7 +611,9 @@
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
-        <div class="arrival-tl-track">
+        <div class="arrival-tl-track"
+             data-runner="danielle" data-idx="2"
+             data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:35.6%;width:7.2%;background:var(--dan)"></div>
           <div class="arrival-tl-bar-next" style="--c:var(--dan);left:77.4%;width:13.7%"></div>
           <div class="arrival-tl-cutoff" style="left:94.4%"></div>
@@ -378,6 +629,7 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Chão da Lagoa)</span>
+      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
   </div>
 
@@ -409,13 +661,15 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-labels"><span>16h pace</span><span>17h pace</span><span>18h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--jon)">
+      <div class="pace-strip-bar" style="background:var(--jon)"
+           data-runner="billy" data-idx="5" data-t0="509" data-t2="573">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
       <div class="pace-strip-times"><span>08:29</span><span>09:01</span><span>09:33</span></div>
     </div>
+    <div class="proj-time" data-runner="billy" data-station="curral"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
       <div class="crew-instr-body">First crew stop.<br>· Gear check<br>· Drop warm clothes / change clothes if weather is warm<br>· Fresh set of shoes &amp; socks<br>· Rain jacket if needed<br>· Swap to fresh shirt<br>· Drop headlamp<br>· 4× PF90s</div>
@@ -430,13 +684,15 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-labels"><span>13h pace</span><span>14h pace</span><span>15h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--dan)">
+      <div class="pace-strip-bar" style="background:var(--dan)"
+           data-runner="danielle" data-idx="2" data-t0="672" data-t2="711">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
       <div class="pace-strip-times"><span>11:12</span><span>11:32</span><span>11:51</span></div>
     </div>
+    <div class="proj-time" data-runner="danielle" data-station="curral"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-dan"></div> Crew Instructions</div>
       <div class="crew-instr-body">TBD</div>
@@ -449,7 +705,7 @@
       <div class="runner-hdr-name" style="color:var(--heather)">Heather</div>
       <div class="runner-hdr-sub">Not on this course</div>
     </div>
-    <div class="absent-note">Heather's Discover course does not pass through Curral das Freiras. Her first crew access is Chão da Lagoa (km 26.3), arriving ~13:23–13:58.</div>
+    <div class="absent-note">Heather's Discover course does not pass through Curral das Freiras. Her first crew access is Chão da Lagoa (km 26.3), arriving ~14:17–15:21.</div>
   </div>
 </div>
 
@@ -481,21 +737,27 @@
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
-        <div class="arrival-tl-track">
+        <div class="arrival-tl-track"
+             data-runner="billy" data-idx="7"
+             data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:13.3%;width:24.7%;background:var(--jon)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:54.2%;width:29.4%"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:55.8%;width:29.7%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-heather"></div></div>
-        <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:39.7%;width:9.7%;background:var(--heather)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:69.4%;width:13.9%"></div>
+        <div class="arrival-tl-track"
+             data-runner="heather" data-idx="3"
+             data-scale-start="660" data-scale-end="1020">
+          <div class="arrival-tl-bar" style="left:54.7%;width:17.8%;background:var(--heather)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:77.2%;width:21.9%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
-        <div class="arrival-tl-track">
+        <div class="arrival-tl-track"
+             data-runner="danielle" data-idx="4"
+             data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:66.1%;width:20.6%;background:var(--dan)"></div>
         </div>
       </div>
@@ -509,6 +771,7 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Larano)</span>
+      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
   </div>
 
@@ -540,13 +803,15 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-labels"><span>16h pace</span><span>17h pace</span><span>18h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--jon)">
+      <div class="pace-strip-bar" style="background:var(--jon)"
+           data-runner="billy" data-idx="7" data-t0="708" data-t2="797">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
       <div class="pace-strip-times"><span>11:48</span><span>12:33</span><span>13:17</span></div>
     </div>
+    <div class="proj-time" data-runner="billy" data-station="lagoa"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
       <div class="crew-instr-body">· PF90s (caffeinated)<br>· Drop poles</div>
@@ -560,14 +825,16 @@
       <div class="runner-hdr-sub">km 26.3 of 56.2 — halfway</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels"><span>7.5h pace</span><span>8h pace</span><span>8.5h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--heather)">
+      <div class="pace-strip-labels"><span>7.5h pace</span><span>8h pace</span><span>9h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--heather)"
+           data-runner="heather" data-idx="3" data-t0="857" data-t2="921">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-times"><span>13:23</span><span>13:40</span><span>13:58</span></div>
+      <div class="pace-strip-times"><span>14:17</span><span>14:39</span><span>15:21</span></div>
     </div>
+    <div class="proj-time" data-runner="heather" data-station="lagoa"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-heather"></div> Crew Instructions</div>
       <div class="crew-instr-body">TBD</div>
@@ -582,13 +849,15 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-labels"><span>13h pace</span><span>14h pace</span><span>15h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--dan)">
+      <div class="pace-strip-bar" style="background:var(--dan)"
+           data-runner="danielle" data-idx="4" data-t0="898" data-t2="972">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
       <div class="pace-strip-times"><span>14:58</span><span>15:35</span><span>16:12</span></div>
     </div>
+    <div class="proj-time" data-runner="danielle" data-station="lagoa"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-dan"></div> Crew Instructions</div>
       <div class="crew-instr-body">TBD</div>
@@ -624,22 +893,28 @@
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-heather"></div></div>
-        <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:19.4%;width:13.9%;background:var(--heather)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:41.7%;width:16.7%"></div>
+        <div class="arrival-tl-track"
+             data-runner="heather" data-idx="5"
+             data-scale-start="840" data-scale-end="1200">
+          <div class="arrival-tl-bar" style="left:27.2%;width:21.9%;background:var(--heather)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:41.7%;width:25%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
-        <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:4.2%;width:29.4%;background:var(--jon);opacity:.4"></div>
+        <div class="arrival-tl-track"
+             data-runner="billy" data-idx="9"
+             data-scale-start="840" data-scale-end="1200">
+          <div class="arrival-tl-bar" style="left:5.8%;width:29.7%;background:var(--jon);opacity:.4"></div>
           <div class="arrival-tl-bar-next" style="--c:var(--jon);left:33.3%;width:33.3%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
-        <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:64.7%;width:27.8%;background:var(--dan);opacity:.4"></div>
+        <div class="arrival-tl-track"
+             data-runner="danielle" data-idx="6"
+             data-scale-start="840" data-scale-end="1200">
+          <div class="arrival-tl-bar" style="left:67.5%;width:28.3%;background:var(--dan);opacity:.4"></div>
         </div>
       </div>
     </div>
@@ -652,6 +927,7 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at finish (Machico)</span>
+      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
   </div>
 
@@ -675,14 +951,16 @@
       <div class="runner-hdr-sub">km 43.3 of 56.2 — 12.9 km left</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels"><span>7.5h pace</span><span>8h pace</span><span>8.5h pace</span></div>
-      <div class="pace-strip-bar" style="background:var(--heather)">
+      <div class="pace-strip-labels"><span>7.5h pace</span><span>8h pace</span><span>9h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--heather)"
+           data-runner="heather" data-idx="5" data-t0="938" data-t2="1017">
         <div class="pace-strip-tick" style="left:0%"></div>
         <div class="pace-strip-tick" style="left:50%"></div>
         <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-times"><span>15:10</span><span>15:35</span><span>16:00</span></div>
+      <div class="pace-strip-times"><span>15:38</span><span>16:04</span><span>16:57</span></div>
     </div>
+    <div class="proj-time" data-runner="heather" data-station="larano"></div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-heather"></div> Crew Instructions</div>
       <div class="crew-instr-body">TBD</div>
@@ -695,7 +973,7 @@
       <div class="runner-hdr-name" style="color:var(--jon)">Billy</div>
       <div class="runner-hdr-sub">km 96.0 of 108.9 — no crew access</div>
     </div>
-    <div class="absent-note">Billy passes through Larano but crew assistance is not permitted here.<br><br>Expected: &nbsp;14:15 (16h) &nbsp;·&nbsp; 15:08 (17h) &nbsp;·&nbsp; 16:01 (18h)</div>
+    <div class="absent-note">Billy passes through Larano but crew assistance is not permitted here.<br><br>Expected: &nbsp;14:21 (16h) &nbsp;·&nbsp; 15:14 (17h) &nbsp;·&nbsp; 16:08 (18h)</div>
   </div>
 
   <div class="runner-block">
@@ -704,7 +982,7 @@
       <div class="runner-hdr-name" style="color:var(--dan)">Danielle</div>
       <div class="runner-hdr-sub">km 63.9 of 76.8 — no crew access</div>
     </div>
-    <div class="absent-note">Danielle passes through Larano but crew assistance is not permitted here.<br><br>Expected: &nbsp;17:53 (13h) &nbsp;·&nbsp; 18:43 (14h) &nbsp;·&nbsp; 19:33 (15h)</div>
+    <div class="absent-note">Danielle passes through Larano but crew assistance is not permitted here.<br><br>Expected: &nbsp;18:03 (13h) &nbsp;·&nbsp; 18:54 (14h) &nbsp;·&nbsp; 19:45 (15h)</div>
   </div>
 </div>
 
@@ -713,11 +991,235 @@
   <strong>Finish — Forum Machico</strong><br>
   <div class="finish-row"><div class="swatch swatch-jon"></div> Billy: &nbsp;16:00 (16h) &nbsp;·&nbsp; 17:00 (17h) &nbsp;·&nbsp; 18:00 (18h)</div>
   <div class="finish-row"><div class="swatch swatch-dan"></div> Danielle: &nbsp;20:00 (13h) &nbsp;·&nbsp; 21:00 (14h) &nbsp;·&nbsp; 22:00 (15h)</div>
-  <div class="finish-row"><div class="swatch swatch-heather"></div> Heather: &nbsp;16:30 (7.5h) &nbsp;·&nbsp; 17:00 (8h) &nbsp;·&nbsp; 17:30 (8.5h)</div>
+  <div class="finish-row"><div class="swatch swatch-heather"></div> Heather: &nbsp;16:30 (7.5h) &nbsp;·&nbsp; 17:00 (8h) &nbsp;·&nbsp; 18:00 (9h)</div>
   <br>
   All times are clock times, April 25. Billy starts 00:00 · Danielle starts 07:00 · Heather starts 09:00.<br>
-  Progress bars show % of total race distance completed at each station.
+  White ▼ markers show projected arrivals based on live checkpoint data.
 </div>
 
+<script>
+// ── Race data: all checkpoint expected times in minutes from midnight ──
+const RACE_DATA = {
+  billy: {
+    scenarios: ['16h', '17h', '18h'],
+    checkpoints: [
+      { name: 'Porto Moniz',       km: 0,     t: [0,   0,   0]    },
+      { name: 'Fanal',             km: 12.3,  t: [116, 123, 130]  },
+      { name: 'Chão da Ribeira',   km: 20.2,  t: [182, 194, 205]  },
+      { name: 'Estanquinhos',      km: 29.9,  t: [268, 285, 301]  },
+      { name: 'Chão dos Louros',   km: 43.9,  t: [382, 406, 430]  },
+      { name: 'Curral das Freiras',km: 58.4,  t: [509, 541, 573]  },
+      { name: 'Pico Ruivo',        km: 69.4,  t: [628, 667, 706]  },
+      { name: 'Chão da Lagoa',     km: 79.0,  t: [708, 753, 797]  },
+      { name: 'Portela',           km: 90.9,  t: [816, 867, 918]  },
+      { name: 'Larano',            km: 96.0,  t: [861, 914, 968]  },
+      { name: 'Machico',           km: 108.9, t: [960, 1020, 1080] },
+    ]
+  },
+  danielle: {
+    scenarios: ['13h', '14h', '15h'],
+    checkpoints: [
+      { name: 'São Vicente',        km: 0,    t: [420, 420, 420]  },
+      { name: 'Chão dos Louros',    km: 11.8, t: [526, 535, 543]  },
+      { name: 'Curral das Freiras', km: 26.3, t: [672, 692, 711]  },
+      { name: 'Pico Ruivo',         km: 37.3, t: [799, 828, 857]  },
+      { name: 'Chão da Lagoa',      km: 46.9, t: [898, 935, 972]  },
+      { name: 'Portela',            km: 58.8, t: [1032,1079,1126] },
+      { name: 'Larano',             km: 63.9, t: [1083,1134,1185] },
+      { name: 'Machico',            km: 76.8, t: [1200,1260,1320] },
+    ]
+  },
+  heather: {
+    scenarios: ['7.5h', '8h', '9h'],
+    checkpoints: [
+      { name: 'Boaventura',     km: 0,    t: [540, 540, 540]  },
+      { name: 'Lombo do Urzal', km: 6.2,  t: [602, 606, 614]  },
+      { name: 'Pico Ruivo',     km: 16.7, t: [768, 783, 814]  },
+      { name: 'Chão da Lagoa',  km: 26.3, t: [857, 879, 921]  },
+      { name: 'Portela',        km: 38.2, t: [918, 943, 993]  },
+      { name: 'Larano',         km: 43.3, t: [938, 964, 1017] },
+      { name: 'Machico',        km: 56.2, t: [990, 1020, 1080]},
+    ]
+  }
+};
+
+function timeToMin(str) {
+  const [h, m] = str.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function minToTime(min) {
+  const totalMin = Math.round(min);
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+
+// Interpolate/extrapolate projected time at targetIdx based on actual time at inputIdx
+function projectTime(runner, actualMin, inputIdx, targetIdx) {
+  const cp = RACE_DATA[runner].checkpoints;
+  const refT0 = cp[inputIdx].t[0];
+  const refT2 = cp[inputIdx].t[2];
+  const factor = (refT2 === refT0) ? 0 : (actualMin - refT0) / (refT2 - refT0);
+  const tgtT0 = cp[targetIdx].t[0];
+  const tgtT2 = cp[targetIdx].t[2];
+  return tgtT0 + factor * (tgtT2 - tgtT0);
+}
+
+// Find the highest-index checkpoint with a value entered for this runner
+function getLatestInput(runner) {
+  let result = null;
+  document.querySelectorAll(`.tracking-input[data-runner="${runner}"]`).forEach(input => {
+    if (input.value) {
+      const idx = parseInt(input.dataset.idx);
+      if (!result || idx > result.idx) {
+        result = { idx, minutes: timeToMin(input.value) };
+      }
+    }
+  });
+  return result;
+}
+
+function updateRunnerMarkers(runner) {
+  const latest = getLatestInput(runner);
+
+  // ── Arrival timeline tracks ──
+  document.querySelectorAll(`.arrival-tl-track[data-runner="${runner}"]`).forEach(track => {
+    const targetIdx = parseInt(track.dataset.idx);
+    const scaleStart = parseInt(track.dataset.scaleStart);
+    const scaleEnd = parseInt(track.dataset.scaleEnd);
+    let marker = track.querySelector('.arrival-tl-proj');
+
+    if (!latest || targetIdx <= latest.idx) {
+      if (marker) marker.remove();
+      return;
+    }
+
+    const proj = projectTime(runner, latest.minutes, latest.idx, targetIdx);
+    const pct = (proj - scaleStart) / (scaleEnd - scaleStart) * 100;
+
+    if (pct < -2 || pct > 102) {
+      if (marker) marker.remove();
+      return;
+    }
+
+    if (!marker) {
+      marker = document.createElement('div');
+      marker.className = 'arrival-tl-proj';
+      track.appendChild(marker);
+    }
+    marker.style.left = Math.max(0, Math.min(100, pct)) + '%';
+  });
+
+  // ── Pace strip bars ──
+  document.querySelectorAll(`.pace-strip-bar[data-runner="${runner}"]`).forEach(bar => {
+    const targetIdx = parseInt(bar.dataset.idx);
+    const t0 = parseInt(bar.dataset.t0);
+    const t2 = parseInt(bar.dataset.t2);
+    let marker = bar.querySelector('.pace-strip-proj');
+
+    // Find the .proj-time label that follows the parent .pace-strip
+    const paceStrip = bar.closest('.pace-strip');
+    const projTimeEl = paceStrip ? paceStrip.nextElementSibling : null;
+    const hasLabel = projTimeEl && projTimeEl.classList.contains('proj-time');
+
+    if (!latest || targetIdx <= latest.idx) {
+      if (marker) marker.remove();
+      if (hasLabel) projTimeEl.textContent = '';
+      return;
+    }
+
+    const proj = projectTime(runner, latest.minutes, latest.idx, targetIdx);
+    const pct = (t2 === t0) ? 50 : (proj - t0) / (t2 - t0) * 100;
+
+    if (!marker) {
+      marker = document.createElement('div');
+      marker.className = 'pace-strip-proj';
+      bar.appendChild(marker);
+    }
+    marker.style.left = Math.max(-5, Math.min(105, pct)) + '%';
+
+    if (hasLabel) {
+      projTimeEl.textContent = '↓ projected: ' + minToTime(proj);
+    }
+  });
+}
+
+function updateAllMarkers() {
+  ['billy', 'danielle', 'heather'].forEach(updateRunnerMarkers);
+}
+
+function updateStatus() {
+  const dot = document.getElementById('tracking-dot');
+  const hint = document.getElementById('tracking-hint');
+  const names = [];
+  ['billy', 'danielle', 'heather'].forEach(runner => {
+    if (getLatestInput(runner)) {
+      names.push(runner.charAt(0).toUpperCase() + runner.slice(1));
+    }
+  });
+  if (names.length) {
+    dot.classList.add('active');
+    hint.textContent = names.join(' · ') + ' — live';
+  } else {
+    dot.classList.remove('active');
+    hint.textContent = 'enter checkpoint times to project arrival';
+  }
+}
+
+function handleInput(input) {
+  input.classList.toggle('has-value', !!input.value);
+  saveInputs();
+  updateAllMarkers();
+  updateStatus();
+}
+
+function toggleTracking() {
+  const body = document.getElementById('tracking-body');
+  const arrow = document.getElementById('tracking-arrow');
+  const open = body.style.display !== 'block';
+  body.style.display = open ? 'block' : 'none';
+  arrow.classList.toggle('open', open);
+}
+
+function clearAll() {
+  document.querySelectorAll('.tracking-input').forEach(input => {
+    input.value = '';
+    input.classList.remove('has-value');
+  });
+  localStorage.removeItem('miut-tracking');
+  updateAllMarkers();
+  updateStatus();
+}
+
+function saveInputs() {
+  const data = {};
+  document.querySelectorAll('.tracking-input').forEach(input => {
+    if (input.value) {
+      data[input.dataset.runner + '_' + input.dataset.idx] = input.value;
+    }
+  });
+  localStorage.setItem('miut-tracking', JSON.stringify(data));
+}
+
+function loadInputs() {
+  try {
+    const data = JSON.parse(localStorage.getItem('miut-tracking') || '{}');
+    Object.entries(data).forEach(([key, value]) => {
+      const [runner, idx] = key.split('_');
+      const input = document.querySelector(`.tracking-input[data-runner="${runner}"][data-idx="${idx}"]`);
+      if (input) {
+        input.value = value;
+        input.classList.add('has-value');
+      }
+    });
+  } catch(e) {}
+}
+
+// Init
+loadInputs();
+updateAllMarkers();
+updateStatus();
+</script>
 </body>
 </html>
