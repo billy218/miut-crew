@@ -46,7 +46,6 @@
 
   /* ── Station card ── */
   .station { margin: 14px 10px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-
   .station-hdr {
     padding: 12px 16px 10px; background: var(--surface2);
     border-bottom: 1px solid var(--border);
@@ -57,7 +56,6 @@
   .station-cutoff { text-align: right; }
   .station-cutoff-label { font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
   .station-cutoff-time { font-size: 16px; font-weight: 500; color: var(--red); }
-
   .station-info {
     padding: 9px 16px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -72,7 +70,7 @@
   .map-link:hover { border-color: var(--accent); color: var(--accent); }
   .map-icon { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 
-  /* ── Arrival timeline ── */
+  /* ── Arrival timeline (station-level overview) ── */
   .arrival-tl { padding: 12px 16px 10px; border-bottom: 1px solid var(--border); }
   .arrival-tl-title { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
   .arrival-tl-rows { display: flex; flex-direction: column; gap: 6px; }
@@ -82,25 +80,44 @@
     flex: 1; position: relative; height: 6px;
     background: var(--border); border-radius: 3px; overflow: visible;
   }
-  .arrival-tl-bar {
-    position: absolute; top: 0; height: 100%; border-radius: 3px;
+  .arrival-tl-bar { position: absolute; top: 0; height: 100%; border-radius: 3px; }
+  .arrival-tl-bar-next {
+    position: absolute; top: 1px; height: 4px; border-radius: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--c, #888) 0, var(--c, #888) 3px,
+      transparent 3px, transparent 7px
+    );
+    opacity: 0.55;
   }
   .arrival-tl-cutoff {
     position: absolute; top: -3px; bottom: -3px; width: 1px;
     background: var(--red); opacity: 0.7;
   }
-  /* Axis */
   .arrival-tl-axis {
-    position: relative; height: 14px; margin-top: 5px;
-    margin-left: 16px; /* swatch 8px + gap 8px */
+    position: relative; height: 14px; margin-top: 5px; margin-left: 16px;
   }
   .arrival-tl-tick {
     position: absolute; font-size: 9px; color: var(--muted);
     transform: translateX(-50%); white-space: nowrap;
   }
-  .arrival-tl-tick.t-start { transform: none; }
-  .arrival-tl-tick.t-end { transform: translateX(-100%); }
+  .arrival-tl-tick.t-start  { transform: none; }
+  .arrival-tl-tick.t-end    { transform: translateX(-100%); }
   .arrival-tl-tick.t-cutoff { color: var(--red); }
+  .arrival-tl-legend {
+    display: flex; gap: 14px; margin-top: 7px;
+    font-size: 9px; color: var(--muted); letter-spacing: 0.04em;
+  }
+  .tl-legend-item { display: flex; align-items: center; gap: 5px; }
+  .tl-legend-solid {
+    display: inline-block; width: 16px; height: 4px; border-radius: 2px;
+    background: var(--muted);
+  }
+  .tl-legend-dashed {
+    display: inline-block; width: 16px; height: 4px; border-radius: 2px;
+    background: repeating-linear-gradient(to right, var(--muted) 0, var(--muted) 3px, transparent 3px, transparent 7px);
+    opacity: 0.7;
+  }
 
   /* ── Shared "what's next" ── */
   .shared-nexts { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); }
@@ -123,7 +140,7 @@
   .runner-hdr-name { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
   .runner-hdr-sub { font-size: 10px; color: var(--muted); margin-left: auto; }
 
-  /* ── Pace strip ── */
+  /* ── Pace strip (per-runner detail) ── */
   .pace-strip { padding: 10px 16px 12px; }
   .pace-strip-labels {
     display: flex; margin-bottom: 5px;
@@ -131,17 +148,23 @@
   }
   .pace-strip-labels span { flex: 1; }
   .pace-strip-labels span:nth-child(2) { text-align: center; }
-  .pace-strip-labels span:last-child { text-align: right; }
-  .pace-strip-track { display: flex; align-items: center; }
-  .pace-strip-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .pace-strip-line { flex: 1; height: 2px; border-radius: 1px; }
+  .pace-strip-labels span:last-child  { text-align: right; }
+  /* Bar mirrors the overview style; ticks are dark notches cut through it */
+  .pace-strip-bar {
+    position: relative; height: 6px; border-radius: 3px; overflow: visible;
+  }
+  .pace-strip-tick {
+    position: absolute; top: -4px; bottom: -4px;
+    width: 2px; background: var(--bg);
+    transform: translateX(-50%); border-radius: 1px;
+  }
   .pace-strip-times {
     display: flex; margin-top: 5px;
     font-size: 12px; font-weight: 500;
   }
   .pace-strip-times span { flex: 1; }
   .pace-strip-times span:nth-child(2) { text-align: center; }
-  .pace-strip-times span:last-child { text-align: right; }
+  .pace-strip-times span:last-child  { text-align: right; }
 
   /* ── Crew instructions ── */
   .crew-instr-block {
@@ -157,7 +180,6 @@
     padding: 10px 12px; min-height: 44px;
     font-size: 11px; color: var(--muted); font-style: italic; line-height: 1.6;
   }
-
   .absent-note { padding: 10px 16px 14px; font-size: 11px; color: var(--muted); line-height: 1.7; }
 
   /* ── Connectors ── */
@@ -201,11 +223,6 @@
 
 
 <!-- ══════════════════════ STOP 1: ESTANQUINHOS ══════════════════════ -->
-<!--
-  Timeline range: 04:00–09:30 (330 min)
-  Billy:   04:28 = 8.5%,  04:45 = 13.6%,  05:01 = 18.5%   bar left=8.5% width=10%
-  Cut-off: 09:15 = 95.5%
--->
 <div class="station">
   <div class="station-hdr">
     <div>
@@ -217,7 +234,6 @@
       <div class="station-cutoff-time">09:15</div>
     </div>
   </div>
-
   <div class="station-info">
     <div class="station-km">Billy · km 29.9 of 108.9</div>
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.7450,-16.9300" target="_blank">
@@ -232,16 +248,21 @@
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
         <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:8.5%;width:10%;background:var(--jon)"></div>
-          <div class="arrival-tl-cutoff" style="left:95.5%"></div>
+          <div class="arrival-tl-bar" style="left:7.8%;width:9.2%;background:var(--jon)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:74.7%;width:17.8%"></div>
+          <div class="arrival-tl-cutoff" style="left:87.5%"></div>
         </div>
       </div>
     </div>
     <div class="arrival-tl-axis">
       <span class="arrival-tl-tick t-start" style="left:0%">04:00</span>
-      <span class="arrival-tl-tick" style="left:36.4%">06:00</span>
-      <span class="arrival-tl-tick" style="left:72.7%">08:00</span>
-      <span class="arrival-tl-tick t-cutoff t-end" style="left:95.5%">⚑ 09:15</span>
+      <span class="arrival-tl-tick" style="left:33.3%">06:00</span>
+      <span class="arrival-tl-tick" style="left:66.7%">08:00</span>
+      <span class="arrival-tl-tick t-cutoff" style="left:87.5%">⚑ 09:15</span>
+    </div>
+    <div class="arrival-tl-legend">
+      <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
+      <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop</span>
     </div>
   </div>
 
@@ -272,19 +293,13 @@
       <div class="runner-hdr-sub">km 29.9 of 108.9</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>16h pace</span><span>17h pace</span><span>18h pace</span>
+      <div class="pace-strip-labels"><span>16h pace</span><span>17h pace</span><span>18h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--jon)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--jon)"></div>
-        <div class="pace-strip-line" style="background:var(--jon);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--jon);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--jon);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--jon);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>04:28</span><span>04:45</span><span>05:01</span>
-      </div>
+      <div class="pace-strip-times"><span>04:28</span><span>04:45</span><span>05:01</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
@@ -315,12 +330,6 @@
 
 
 <!-- ══════════════════════ STOP 2: CURRAL DAS FREIRAS ══════════════════════ -->
-<!--
-  Timeline range: 08:00–17:00 (540 min)
-  Billy:   08:29 = 5.4%,  09:01 = 11.3%,  09:33 = 17.2%   bar left=5.4% width=11.9%
-  Danielle:11:12 = 35.6%, 11:32 = 39.3%,  11:51 = 42.8%   bar left=35.6% width=7.2%
-  Cut-off: 16:30 = 94.4%
--->
 <div class="station">
   <div class="station-hdr">
     <div>
@@ -332,7 +341,6 @@
       <div class="station-cutoff-time">16:30</div>
     </div>
   </div>
-
   <div class="station-info">
     <div class="station-km"><span style="color:var(--jon)">●</span> km 58.4 &nbsp;·&nbsp; <span style="color:var(--dan)">●</span> km 26.3</div>
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.7200,-16.9700" target="_blank">
@@ -348,6 +356,7 @@
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
         <div class="arrival-tl-track">
           <div class="arrival-tl-bar" style="left:5.4%;width:11.9%;background:var(--jon)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:42.2%;width:16.5%"></div>
           <div class="arrival-tl-cutoff" style="left:94.4%"></div>
         </div>
       </div>
@@ -355,6 +364,7 @@
         <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
         <div class="arrival-tl-track">
           <div class="arrival-tl-bar" style="left:35.6%;width:7.2%;background:var(--dan)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--dan);left:77.4%;width:13.7%"></div>
           <div class="arrival-tl-cutoff" style="left:94.4%"></div>
         </div>
       </div>
@@ -364,6 +374,10 @@
       <span class="arrival-tl-tick" style="left:33.3%">11:00</span>
       <span class="arrival-tl-tick" style="left:66.7%">14:00</span>
       <span class="arrival-tl-tick t-cutoff t-end" style="left:94.4%">⚑ 16:30</span>
+    </div>
+    <div class="arrival-tl-legend">
+      <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
+      <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Chão da Lagoa)</span>
     </div>
   </div>
 
@@ -394,19 +408,13 @@
       <div class="runner-hdr-sub">km 58.4 of 108.9 — halfway</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>16h pace</span><span>17h pace</span><span>18h pace</span>
+      <div class="pace-strip-labels"><span>16h pace</span><span>17h pace</span><span>18h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--jon)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--jon)"></div>
-        <div class="pace-strip-line" style="background:var(--jon);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--jon);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--jon);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--jon);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>08:29</span><span>09:01</span><span>09:33</span>
-      </div>
+      <div class="pace-strip-times"><span>08:29</span><span>09:01</span><span>09:33</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
@@ -421,19 +429,13 @@
       <div class="runner-hdr-sub">km 26.3 of 76.8 — ⅓ done</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>13h pace</span><span>14h pace</span><span>15h pace</span>
+      <div class="pace-strip-labels"><span>13h pace</span><span>14h pace</span><span>15h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--dan)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--dan)"></div>
-        <div class="pace-strip-line" style="background:var(--dan);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--dan);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--dan);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--dan);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>11:12</span><span>11:32</span><span>11:51</span>
-      </div>
+      <div class="pace-strip-times"><span>11:12</span><span>11:32</span><span>11:51</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-dan"></div> Crew Instructions</div>
@@ -455,12 +457,6 @@
 
 
 <!-- ══════════════════════ STOP 3: CHÃO DA LAGOA ══════════════════════ -->
-<!--
-  Timeline range: 11:00–17:00 (360 min). Cut-off 23:30 is off-scale, shown in header.
-  Billy:   11:48 = 13.3%, 12:33 = 25.8%, 13:17 = 38.1%   bar left=13.3% width=24.7%
-  Heather: 13:23 = 39.7%, 13:40 = 44.4%, 13:58 = 49.4%   bar left=39.7% width=9.7%
-  Danielle:14:58 = 66.1%, 15:35 = 76.4%, 16:12 = 86.7%   bar left=66.1% width=20.6%
--->
 <div class="station">
   <div class="station-hdr">
     <div>
@@ -472,7 +468,6 @@
       <div class="station-cutoff-time">23:30</div>
     </div>
   </div>
-
   <div class="station-info">
     <div class="station-km"><span style="color:var(--jon)">●</span> km 79.0 &nbsp;·&nbsp; <span style="color:var(--heather)">●</span> km 26.3 &nbsp;·&nbsp; <span style="color:var(--dan)">●</span> km 46.9</div>
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.71183,-16.91083" target="_blank">
@@ -488,12 +483,14 @@
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
         <div class="arrival-tl-track">
           <div class="arrival-tl-bar" style="left:13.3%;width:24.7%;background:var(--jon)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:54.2%;width:29.4%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-heather"></div></div>
         <div class="arrival-tl-track">
           <div class="arrival-tl-bar" style="left:39.7%;width:9.7%;background:var(--heather)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:69.4%;width:13.9%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
@@ -508,6 +505,10 @@
       <span class="arrival-tl-tick" style="left:33.3%">13:00</span>
       <span class="arrival-tl-tick" style="left:66.7%">15:00</span>
       <span class="arrival-tl-tick t-end" style="left:100%">17:00</span>
+    </div>
+    <div class="arrival-tl-legend">
+      <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
+      <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Larano)</span>
     </div>
   </div>
 
@@ -531,7 +532,6 @@
     </div>
   </div>
 
-  <!-- Ordered by arrival: Billy → Heather → Danielle -->
   <div class="runner-block">
     <div class="runner-hdr">
       <div class="swatch swatch-jon"></div>
@@ -539,19 +539,13 @@
       <div class="runner-hdr-sub">km 79 of 108.9 — 30 km left</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>16h pace</span><span>17h pace</span><span>18h pace</span>
+      <div class="pace-strip-labels"><span>16h pace</span><span>17h pace</span><span>18h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--jon)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--jon)"></div>
-        <div class="pace-strip-line" style="background:var(--jon);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--jon);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--jon);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--jon);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>11:48</span><span>12:33</span><span>13:17</span>
-      </div>
+      <div class="pace-strip-times"><span>11:48</span><span>12:33</span><span>13:17</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-jon"></div> Crew Instructions</div>
@@ -566,19 +560,13 @@
       <div class="runner-hdr-sub">km 26.3 of 56.2 — halfway</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>7.5h pace</span><span>8h pace</span><span>8.5h pace</span>
+      <div class="pace-strip-labels"><span>7.5h pace</span><span>8h pace</span><span>8.5h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--heather)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--heather)"></div>
-        <div class="pace-strip-line" style="background:var(--heather);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--heather);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--heather);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--heather);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>13:23</span><span>13:40</span><span>13:58</span>
-      </div>
+      <div class="pace-strip-times"><span>13:23</span><span>13:40</span><span>13:58</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-heather"></div> Crew Instructions</div>
@@ -593,19 +581,13 @@
       <div class="runner-hdr-sub">km 46.9 of 76.8 — 30 km left</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>13h pace</span><span>14h pace</span><span>15h pace</span>
+      <div class="pace-strip-labels"><span>13h pace</span><span>14h pace</span><span>15h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--dan)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--dan)"></div>
-        <div class="pace-strip-line" style="background:var(--dan);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--dan);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--dan);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--dan);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>14:58</span><span>15:35</span><span>16:12</span>
-      </div>
+      <div class="pace-strip-times"><span>14:58</span><span>15:35</span><span>16:12</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-dan"></div> Crew Instructions</div>
@@ -618,12 +600,6 @@
 
 
 <!-- ══════════════════════ STOP 4: LARANO ══════════════════════ -->
-<!--
-  Timeline range: 14:00–20:00 (360 min). No cut-off.
-  Billy:   14:15 = 4.2%,  15:08 = 18.9%,  16:01 = 33.6%   bar left=4.2% width=29.4%
-  Heather: 15:10 = 19.4%, 15:35 = 26.4%,  16:00 = 33.3%   bar left=19.4% width=13.9%
-  Danielle:17:53 = 64.7%, 18:43 = 78.6%,  19:33 = 92.5%   bar left=64.7% width=27.8%
--->
 <div class="station">
   <div class="station-hdr">
     <div>
@@ -635,7 +611,6 @@
       <div class="station-cutoff-time" style="color:var(--muted);font-size:13px">none</div>
     </div>
   </div>
-
   <div class="station-info">
     <div class="station-km"><span style="color:var(--heather)">●</span> km 43.3 &nbsp;·&nbsp; <span style="color:var(--jon)">●</span> km 96.0 &nbsp;·&nbsp; <span style="color:var(--dan)">●</span> km 63.9 &nbsp;<span style="color:var(--muted);font-size:9px">(pass-through only)</span></div>
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Larano,Madeira" target="_blank">
@@ -651,18 +626,20 @@
         <div class="arrival-tl-swatch"><div class="swatch swatch-heather"></div></div>
         <div class="arrival-tl-track">
           <div class="arrival-tl-bar" style="left:19.4%;width:13.9%;background:var(--heather)"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:41.7%;width:16.7%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
         <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:4.2%;width:29.4%;background:var(--jon);opacity:.5"></div>
+          <div class="arrival-tl-bar" style="left:4.2%;width:29.4%;background:var(--jon);opacity:.4"></div>
+          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:33.3%;width:33.3%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
         <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
         <div class="arrival-tl-track">
-          <div class="arrival-tl-bar" style="left:64.7%;width:27.8%;background:var(--dan);opacity:.5"></div>
+          <div class="arrival-tl-bar" style="left:64.7%;width:27.8%;background:var(--dan);opacity:.4"></div>
         </div>
       </div>
     </div>
@@ -671,6 +648,10 @@
       <span class="arrival-tl-tick" style="left:33.3%">16:00</span>
       <span class="arrival-tl-tick" style="left:66.7%">18:00</span>
       <span class="arrival-tl-tick t-end" style="left:100%">20:00</span>
+    </div>
+    <div class="arrival-tl-legend">
+      <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
+      <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at finish (Machico)</span>
     </div>
   </div>
 
@@ -694,19 +675,13 @@
       <div class="runner-hdr-sub">km 43.3 of 56.2 — 12.9 km left</div>
     </div>
     <div class="pace-strip">
-      <div class="pace-strip-labels">
-        <span>7.5h pace</span><span>8h pace</span><span>8.5h pace</span>
+      <div class="pace-strip-labels"><span>7.5h pace</span><span>8h pace</span><span>8.5h pace</span></div>
+      <div class="pace-strip-bar" style="background:var(--heather)">
+        <div class="pace-strip-tick" style="left:0%"></div>
+        <div class="pace-strip-tick" style="left:50%"></div>
+        <div class="pace-strip-tick" style="left:100%"></div>
       </div>
-      <div class="pace-strip-track">
-        <div class="pace-strip-dot" style="background:var(--heather)"></div>
-        <div class="pace-strip-line" style="background:var(--heather);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--heather);opacity:.7"></div>
-        <div class="pace-strip-line" style="background:var(--heather);opacity:.25"></div>
-        <div class="pace-strip-dot" style="background:var(--heather);opacity:.45"></div>
-      </div>
-      <div class="pace-strip-times">
-        <span>15:10</span><span>15:35</span><span>16:00</span>
-      </div>
+      <div class="pace-strip-times"><span>15:10</span><span>15:35</span><span>16:00</span></div>
     </div>
     <div class="crew-instr-block">
       <div class="crew-instr-runner"><div class="swatch swatch-heather"></div> Crew Instructions</div>
