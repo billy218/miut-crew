@@ -255,22 +255,28 @@
     width: 2px; background: var(--bg);
     transform: translateX(-50%); border-radius: 1px;
   }
-  /* Scenario labels above the track (16h / 17h / 18h etc.) */
+  /* Scenario labels above the track — stacked name + exact time */
   .pace-strip-scenarios {
-    position: relative; height: 13px; margin-bottom: 3px;
+    position: relative; height: 28px; margin-bottom: 3px;
   }
   .pace-strip-scen-lbl {
     position: absolute; transform: translateX(-50%);
-    font-size: 9px; color: var(--muted); letter-spacing: 0.06em;
+    display: flex; flex-direction: column; align-items: center;
     white-space: nowrap;
   }
-  /* Clock time axis below the track */
+  .pace-strip-scen-name {
+    font-size: 9px; color: var(--muted); letter-spacing: 0.06em;
+  }
+  .pace-strip-scen-time {
+    font-size: 10px; font-weight: 500; color: var(--text);
+  }
+  /* Whole-hour clock axis below the track */
   .pace-strip-axis {
     position: relative; height: 14px; margin-top: 4px;
   }
   .pace-strip-axtime {
     position: absolute; transform: translateX(-50%);
-    font-size: 11px; font-weight: 500; white-space: nowrap;
+    font-size: 9px; color: var(--muted); white-space: nowrap;
   }
 
   /* ── Crew instructions ── */
@@ -548,23 +554,23 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:32.3%">16h</div>
-        <div class="pace-strip-scen-lbl" style="left:50.6%">17h</div>
-        <div class="pace-strip-scen-lbl" style="left:67.8%">18h</div>
+        <div class="pace-strip-scen-lbl" style="left:41.9%"><span class="pace-strip-scen-name">16h</span><span class="pace-strip-scen-time">04:28</span></div>
+        <div class="pace-strip-scen-lbl" style="left:50.0%"><span class="pace-strip-scen-name">17h</span><span class="pace-strip-scen-time">04:45</span></div>
+        <div class="pace-strip-scen-lbl" style="left:57.6%"><span class="pace-strip-scen-name">18h</span><span class="pace-strip-scen-time">05:01</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="billy" data-idx="3" data-t0="268" data-t2="301"
-           data-track-start="238" data-track-end="331">
-        <div class="pace-strip-bar" style="left:32.3%;width:35.5%;background:var(--jon)">
+           data-track-start="180" data-track-end="390">
+        <div class="pace-strip-bar" style="left:41.9%;width:15.7%;background:var(--jon)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:51.5%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:32.3%">04:28</div>
-        <div class="pace-strip-axtime" style="left:50.6%">04:45</div>
-        <div class="pace-strip-axtime" style="left:67.8%">05:01</div>
+        <div class="pace-strip-axtime" style="left:28.6%">04:00</div>
+        <div class="pace-strip-axtime" style="left:57.1%">05:00</div>
+        <div class="pace-strip-axtime" style="left:85.7%">06:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="billy" data-station="estanquinhos"></div>
@@ -681,23 +687,23 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:24.2%">16h</div>
-        <div class="pace-strip-scen-lbl" style="left:50%">17h</div>
-        <div class="pace-strip-scen-lbl" style="left:75.8%">18h</div>
+        <div class="pace-strip-scen-lbl" style="left:37.1%"><span class="pace-strip-scen-name">16h</span><span class="pace-strip-scen-time">08:29</span></div>
+        <div class="pace-strip-scen-lbl" style="left:50.4%"><span class="pace-strip-scen-name">17h</span><span class="pace-strip-scen-time">09:01</span></div>
+        <div class="pace-strip-scen-lbl" style="left:63.8%"><span class="pace-strip-scen-name">18h</span><span class="pace-strip-scen-time">09:33</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="billy" data-idx="5" data-t0="509" data-t2="573"
-           data-track-start="479" data-track-end="603">
-        <div class="pace-strip-bar" style="left:24.2%;width:51.6%;background:var(--jon)">
+           data-track-start="420" data-track-end="660">
+        <div class="pace-strip-bar" style="left:37.1%;width:26.7%;background:var(--jon)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:50%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:24.2%">08:29</div>
-        <div class="pace-strip-axtime" style="left:50%">09:01</div>
-        <div class="pace-strip-axtime" style="left:75.8%">09:33</div>
+        <div class="pace-strip-axtime" style="left:25.0%">08:00</div>
+        <div class="pace-strip-axtime" style="left:50.0%">09:00</div>
+        <div class="pace-strip-axtime" style="left:75.0%">10:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="billy" data-station="curral"></div>
@@ -715,23 +721,22 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:30.3%">13h</div>
-        <div class="pace-strip-scen-lbl" style="left:50.5%">14h</div>
-        <div class="pace-strip-scen-lbl" style="left:69.7%">15h</div>
+        <div class="pace-strip-scen-lbl" style="left:40.0%"><span class="pace-strip-scen-name">13h</span><span class="pace-strip-scen-time">11:12</span></div>
+        <div class="pace-strip-scen-lbl" style="left:51.1%"><span class="pace-strip-scen-name">14h</span><span class="pace-strip-scen-time">11:32</span></div>
+        <div class="pace-strip-scen-lbl" style="left:61.7%"><span class="pace-strip-scen-name">15h</span><span class="pace-strip-scen-time">11:51</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="danielle" data-idx="2" data-t0="672" data-t2="711"
-           data-track-start="642" data-track-end="741">
-        <div class="pace-strip-bar" style="left:30.3%;width:39.4%;background:var(--dan)">
+           data-track-start="600" data-track-end="780">
+        <div class="pace-strip-bar" style="left:40.0%;width:21.7%;background:var(--dan)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:51.3%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:30.3%">11:12</div>
-        <div class="pace-strip-axtime" style="left:50.5%">11:32</div>
-        <div class="pace-strip-axtime" style="left:69.7%">11:51</div>
+        <div class="pace-strip-axtime" style="left:33.3%">11:00</div>
+        <div class="pace-strip-axtime" style="left:66.7%">12:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="danielle" data-station="curral"></div>
@@ -845,23 +850,24 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:20.1%">16h</div>
-        <div class="pace-strip-scen-lbl" style="left:50.3%">17h</div>
-        <div class="pace-strip-scen-lbl" style="left:79.9%">18h</div>
+        <div class="pace-strip-scen-lbl" style="left:32.5%"><span class="pace-strip-scen-name">16h</span><span class="pace-strip-scen-time">11:48</span></div>
+        <div class="pace-strip-scen-lbl" style="left:51.3%"><span class="pace-strip-scen-name">17h</span><span class="pace-strip-scen-time">12:33</span></div>
+        <div class="pace-strip-scen-lbl" style="left:69.6%"><span class="pace-strip-scen-name">18h</span><span class="pace-strip-scen-time">13:17</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="billy" data-idx="7" data-t0="708" data-t2="797"
-           data-track-start="678" data-track-end="827">
-        <div class="pace-strip-bar" style="left:20.1%;width:59.7%;background:var(--jon)">
+           data-track-start="630" data-track-end="870">
+        <div class="pace-strip-bar" style="left:32.5%;width:37.1%;background:var(--jon)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:50.6%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:20.1%">11:48</div>
-        <div class="pace-strip-axtime" style="left:50.3%">12:33</div>
-        <div class="pace-strip-axtime" style="left:79.9%">13:17</div>
+        <div class="pace-strip-axtime" style="left:12.5%">11:00</div>
+        <div class="pace-strip-axtime" style="left:37.5%">12:00</div>
+        <div class="pace-strip-axtime" style="left:62.5%">13:00</div>
+        <div class="pace-strip-axtime" style="left:87.5%">14:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="billy" data-station="lagoa"></div>
@@ -879,23 +885,23 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:24.2%">7.5h</div>
-        <div class="pace-strip-scen-lbl" style="left:41.9%">8h</div>
-        <div class="pace-strip-scen-lbl" style="left:75.8%">9h</div>
+        <div class="pace-strip-scen-lbl" style="left:36.7%"><span class="pace-strip-scen-name">7.5h</span><span class="pace-strip-scen-time">14:17</span></div>
+        <div class="pace-strip-scen-lbl" style="left:47.1%"><span class="pace-strip-scen-name">8h</span><span class="pace-strip-scen-time">14:39</span></div>
+        <div class="pace-strip-scen-lbl" style="left:67.1%"><span class="pace-strip-scen-name">9h</span><span class="pace-strip-scen-time">15:21</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="heather" data-idx="3" data-t0="857" data-t2="921"
-           data-track-start="827" data-track-end="951">
-        <div class="pace-strip-bar" style="left:24.2%;width:51.6%;background:var(--heather)">
+           data-track-start="780" data-track-end="990">
+        <div class="pace-strip-bar" style="left:36.7%;width:30.5%;background:var(--heather)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:34.4%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:24.2%">14:17</div>
-        <div class="pace-strip-axtime" style="left:41.9%">14:39</div>
-        <div class="pace-strip-axtime" style="left:75.8%">15:21</div>
+        <div class="pace-strip-axtime" style="left:28.6%">14:00</div>
+        <div class="pace-strip-axtime" style="left:57.1%">15:00</div>
+        <div class="pace-strip-axtime" style="left:85.7%">16:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="heather" data-station="lagoa"></div>
@@ -913,23 +919,24 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:22.4%">13h</div>
-        <div class="pace-strip-scen-lbl" style="left:50%">14h</div>
-        <div class="pace-strip-scen-lbl" style="left:77.6%">15h</div>
+        <div class="pace-strip-scen-lbl" style="left:36.7%"><span class="pace-strip-scen-name">13h</span><span class="pace-strip-scen-time">14:58</span></div>
+        <div class="pace-strip-scen-lbl" style="left:52.1%"><span class="pace-strip-scen-name">14h</span><span class="pace-strip-scen-time">15:35</span></div>
+        <div class="pace-strip-scen-lbl" style="left:67.5%"><span class="pace-strip-scen-name">15h</span><span class="pace-strip-scen-time">16:12</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="danielle" data-idx="4" data-t0="898" data-t2="972"
-           data-track-start="868" data-track-end="1002">
-        <div class="pace-strip-bar" style="left:22.4%;width:55.2%;background:var(--dan)">
+           data-track-start="810" data-track-end="1050">
+        <div class="pace-strip-bar" style="left:36.7%;width:30.8%;background:var(--dan)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:50%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:22.4%">14:58</div>
-        <div class="pace-strip-axtime" style="left:50%">15:35</div>
-        <div class="pace-strip-axtime" style="left:77.6%">16:12</div>
+        <div class="pace-strip-axtime" style="left:12.5%">14:00</div>
+        <div class="pace-strip-axtime" style="left:37.5%">15:00</div>
+        <div class="pace-strip-axtime" style="left:62.5%">16:00</div>
+        <div class="pace-strip-axtime" style="left:87.5%">17:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="danielle" data-station="lagoa"></div>
@@ -1027,23 +1034,23 @@
     </div>
     <div class="pace-strip">
       <div class="pace-strip-scenarios">
-        <div class="pace-strip-scen-lbl" style="left:21.6%">7.5h</div>
-        <div class="pace-strip-scen-lbl" style="left:40.3%">8h</div>
-        <div class="pace-strip-scen-lbl" style="left:78.4%">9h</div>
+        <div class="pace-strip-scen-lbl" style="left:32.4%"><span class="pace-strip-scen-name">7.5h</span><span class="pace-strip-scen-time">15:38</span></div>
+        <div class="pace-strip-scen-lbl" style="left:44.8%"><span class="pace-strip-scen-name">8h</span><span class="pace-strip-scen-time">16:04</span></div>
+        <div class="pace-strip-scen-lbl" style="left:70.0%"><span class="pace-strip-scen-name">9h</span><span class="pace-strip-scen-time">16:57</span></div>
       </div>
       <div class="pace-strip-track"
            data-runner="heather" data-idx="5" data-t0="938" data-t2="1017"
-           data-track-start="908" data-track-end="1047">
-        <div class="pace-strip-bar" style="left:21.6%;width:56.8%;background:var(--heather)">
+           data-track-start="870" data-track-end="1080">
+        <div class="pace-strip-bar" style="left:32.4%;width:37.6%;background:var(--heather)">
           <div class="pace-strip-tick" style="left:0%"></div>
           <div class="pace-strip-tick" style="left:32.9%"></div>
           <div class="pace-strip-tick" style="left:100%"></div>
         </div>
       </div>
       <div class="pace-strip-axis">
-        <div class="pace-strip-axtime" style="left:21.6%">15:38</div>
-        <div class="pace-strip-axtime" style="left:40.3%">16:04</div>
-        <div class="pace-strip-axtime" style="left:78.4%">16:57</div>
+        <div class="pace-strip-axtime" style="left:14.3%">15:00</div>
+        <div class="pace-strip-axtime" style="left:42.9%">16:00</div>
+        <div class="pace-strip-axtime" style="left:71.4%">17:00</div>
       </div>
     </div>
     <div class="proj-time" data-runner="heather" data-station="larano"></div>
