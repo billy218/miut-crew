@@ -139,6 +139,32 @@
   }
   .proj-time:empty { display: none; }
 
+  /* ── Projected finish (tracking panel + end card) ── */
+  .tracking-proj-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 16px; border-top: 1px solid var(--border);
+    font-size: 11px;
+  }
+  .tracking-proj-label { color: var(--muted); letter-spacing: 0.04em; }
+  .tracking-proj-val { color: var(--accent); font-weight: 500; }
+  .proj-finish-card {
+    margin: 14px 10px 0; border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden;
+  }
+  .proj-finish-hdr {
+    padding: 10px 16px 8px; background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  .proj-finish-row {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 9px 16px; border-bottom: 1px solid var(--border);
+  }
+  .proj-finish-row:last-child { border-bottom: none; }
+  .proj-finish-name { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .proj-finish-time { margin-left: auto; font-size: 15px; font-weight: 500; color: var(--accent); }
+  .proj-finish-dur { font-size: 10px; color: var(--muted); margin-left: 6px; }
+
   /* ── Station card ── */
   .station { margin: 14px 10px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .station-hdr {
@@ -153,7 +179,7 @@
   .station-cutoff-time { font-size: 16px; font-weight: 500; color: var(--red); }
   .station-info {
     padding: 9px 16px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: flex-end;
+    display: flex; align-items: center; justify-content: center;
   }
   .map-link {
     display: flex; align-items: center; gap: 6px;
@@ -396,6 +422,10 @@
         <span class="tracking-km">km 96.0</span>
         <input class="tracking-input" type="time" data-runner="billy" data-idx="9" oninput="handleInput(this)">
       </div>
+      <div class="tracking-proj-row" id="proj-finish-billy" style="display:none">
+        <span class="tracking-proj-label">↓ projected finish</span>
+        <span class="tracking-proj-val" id="proj-finish-val-billy"></span>
+      </div>
     </div>
 
     <!-- Danielle -->
@@ -435,6 +465,10 @@
         <span class="tracking-km">km 63.9</span>
         <input class="tracking-input" type="time" data-runner="danielle" data-idx="6" oninput="handleInput(this)">
       </div>
+      <div class="tracking-proj-row" id="proj-finish-danielle" style="display:none">
+        <span class="tracking-proj-label">↓ projected finish</span>
+        <span class="tracking-proj-val" id="proj-finish-val-danielle"></span>
+      </div>
     </div>
 
     <!-- Heather -->
@@ -468,6 +502,10 @@
         <span class="tracking-cp">Larano</span>
         <span class="tracking-km">km 43.3</span>
         <input class="tracking-input" type="time" data-runner="heather" data-idx="5" oninput="handleInput(this)">
+      </div>
+      <div class="tracking-proj-row" id="proj-finish-heather" style="display:none">
+        <span class="tracking-proj-label">↓ projected finish</span>
+        <span class="tracking-proj-val" id="proj-finish-val-heather"></span>
       </div>
     </div>
 
@@ -535,11 +573,10 @@
         <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~2 – 2½ hrs</div>
       </div>
       <div class="next-box">
-        <div class="next-box-lbl">→ Next crew</div>
+        <div class="next-box-lbl">→ Drive to next</div>
         <div class="next-box-dest">Curral das Freiras</div>
-        <div class="next-box-km">28.5 <span>km</span></div>
-        <div class="next-box-sub">1,785↑ &nbsp;2,715↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~4 – 4½ hrs</div>
+        <div class="next-box-km">~45 <span>min</span></div>
+        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">runners: ~4 – 4½ hrs</div>
       </div>
     </div>
   </div>
@@ -666,11 +703,10 @@
         <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~2 hrs</div>
       </div>
       <div class="next-box">
-        <div class="next-box-lbl">→ Next crew</div>
+        <div class="next-box-lbl">→ Drive to next</div>
         <div class="next-box-dest">Chão da Lagoa</div>
-        <div class="next-box-km">20.6 <span>km</span></div>
-        <div class="next-box-sub">1,910↑ &nbsp;1,080↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~3 – 4 hrs</div>
+        <div class="next-box-km">~50 <span>min</span></div>
+        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">runners: ~3 – 4 hrs</div>
       </div>
     </div>
   </div>
@@ -828,11 +864,10 @@
         <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~1¼ – 2½ hrs</div>
       </div>
       <div class="next-box">
-        <div class="next-box-lbl">→ Finish</div>
-        <div class="next-box-dest">Machico</div>
-        <div class="next-box-km">29.9 <span>km</span></div>
-        <div class="next-box-sub">360↑ &nbsp;2,835↓ remain</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~3½ – 5½ hrs</div>
+        <div class="next-box-lbl">→ Drive to next</div>
+        <div class="next-box-dest">Larano</div>
+        <div class="next-box-km">~40 <span>min</span></div>
+        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">runners: ~1½ – 3½ hrs</div>
       </div>
     </div>
   </div>
@@ -1011,11 +1046,10 @@
     <div class="nexts-title">What's next</div>
     <div class="next-grid">
       <div class="next-box">
-        <div class="next-box-lbl">→ Finish</div>
+        <div class="next-box-lbl">→ Drive to finish</div>
         <div class="next-box-dest">Machico</div>
-        <div class="next-box-km">12.9 <span>km</span></div>
-        <div class="next-box-sub">230↑ &nbsp;315↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~1¼ – 1½ hrs</div>
+        <div class="next-box-km">~20 <span>min</span></div>
+        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">runners: ~1¼ – 1½ hrs</div>
       </div>
     </div>
   </div>
@@ -1073,6 +1107,28 @@
   </div>
 </div>
 
+
+<div class="proj-finish-card" id="proj-finish-card" style="display:none">
+  <div class="proj-finish-hdr">Projected Finishes — Machico</div>
+  <div class="proj-finish-row" id="proj-card-row-billy" style="display:none">
+    <div class="swatch swatch-jon"></div>
+    <span class="proj-finish-name" style="color:var(--jon)">Billy</span>
+    <span class="proj-finish-time" id="proj-card-time-billy"></span>
+    <span class="proj-finish-dur" id="proj-card-dur-billy"></span>
+  </div>
+  <div class="proj-finish-row" id="proj-card-row-danielle" style="display:none">
+    <div class="swatch swatch-dan"></div>
+    <span class="proj-finish-name" style="color:var(--dan)">Danielle</span>
+    <span class="proj-finish-time" id="proj-card-time-danielle"></span>
+    <span class="proj-finish-dur" id="proj-card-dur-danielle"></span>
+  </div>
+  <div class="proj-finish-row" id="proj-card-row-heather" style="display:none">
+    <div class="swatch swatch-heather"></div>
+    <span class="proj-finish-name" style="color:var(--heather)">Heather</span>
+    <span class="proj-finish-time" id="proj-card-time-heather"></span>
+    <span class="proj-finish-dur" id="proj-card-dur-heather"></span>
+  </div>
+</div>
 
 <div class="footer">
   <strong>Finish — Forum Machico</strong><br>
@@ -1259,11 +1315,52 @@ function updateStatus() {
   }
 }
 
+const FINISH_IDX   = { billy: 10, danielle: 7, heather: 6 };
+const START_MIN    = { billy: 0,  danielle: 420, heather: 540 };
+
+function updateFinishProjections() {
+  let anyVisible = false;
+  ['billy', 'danielle', 'heather'].forEach(runner => {
+    const latest = getLatestInput(runner);
+    const panelRow = document.getElementById(`proj-finish-${runner}`);
+    const panelVal = document.getElementById(`proj-finish-val-${runner}`);
+    const cardRow  = document.getElementById(`proj-card-row-${runner}`);
+    const cardTime = document.getElementById(`proj-card-time-${runner}`);
+    const cardDur  = document.getElementById(`proj-card-dur-${runner}`);
+
+    if (!latest) {
+      if (panelRow) panelRow.style.display = 'none';
+      if (cardRow)  cardRow.style.display  = 'none';
+      return;
+    }
+
+    const proj   = projectTime(runner, latest.minutes, latest.idx, FINISH_IDX[runner]);
+    const timeStr = minToTime(proj);
+    const durMin  = Math.round(proj) - START_MIN[runner];
+    const durStr  = Math.floor(durMin / 60) + 'h ' + String(durMin % 60).padStart(2, '0') + 'm';
+
+    if (panelRow) {
+      panelRow.style.display = '';
+      panelVal.textContent = timeStr + ' · ' + durStr;
+    }
+    if (cardRow) {
+      cardRow.style.display  = '';
+      cardTime.textContent   = timeStr;
+      cardDur.textContent    = durStr;
+      anyVisible = true;
+    }
+  });
+
+  const card = document.getElementById('proj-finish-card');
+  if (card) card.style.display = anyVisible ? '' : 'none';
+}
+
 function handleInput(input) {
   input.classList.toggle('has-value', !!input.value);
   saveInputs();
   updateAllMarkers();
   updateStatus();
+  updateFinishProjections();
 }
 
 function toggleTracking() {
@@ -1282,6 +1379,7 @@ function clearAll() {
   localStorage.removeItem('miut-tracking');
   updateAllMarkers();
   updateStatus();
+  updateFinishProjections();
 }
 
 function saveInputs() {
@@ -1312,6 +1410,7 @@ function loadInputs() {
 loadInputs();
 updateAllMarkers();
 updateStatus();
+updateFinishProjections();
 </script>
 </body>
 </html>
