@@ -135,7 +135,7 @@
   }
   .proj-time {
     padding: 2px 16px 8px;
-    font-size: 10px; color: var(--accent); letter-spacing: 0.04em;
+    font-size: 12px; font-weight: 500; color: var(--accent); letter-spacing: 0.04em;
   }
   .proj-time:empty { display: none; }
 
@@ -1227,6 +1227,72 @@ function getLatestInput(runner) {
   return result;
 }
 
+// Renders a pace strip from scratch, expanding the track if projMin falls outside bounds.
+// projMin = projected arrival in minutes-from-midnight, or null for no projection.
+function renderPaceStrip(track, projMin) {
+  const runner = track.dataset.runner;
+  const idx    = parseInt(track.dataset.idx);
+  const t0     = parseInt(track.dataset.t0);
+  const t2     = parseInt(track.dataset.t2);
+  const t1     = RACE_DATA[runner].checkpoints[idx].t[1];
+
+  // Start with base bounds; expand to include projection with 30-min padding
+  let tStart = parseInt(track.dataset.trackStart);
+  let tEnd   = parseInt(track.dataset.trackEnd);
+  if (projMin != null) {
+    tStart = Math.min(tStart, Math.floor((projMin - 30) / 30) * 30);
+    tEnd   = Math.max(tEnd,   Math.ceil( (projMin + 30) / 30) * 30);
+  }
+  const span = tEnd - tStart;
+  const pct  = t => ((t - tStart) / span * 100).toFixed(1) + '%';
+
+  // Update coloured bar position
+  const bar = track.querySelector('.pace-strip-bar');
+  if (bar) {
+    bar.style.left  = pct(t0);
+    bar.style.width = ((t2 - t0) / span * 100).toFixed(1) + '%';
+  }
+
+  const paceStrip = track.closest('.pace-strip');
+  if (paceStrip) {
+    // Reposition scenario labels above bar
+    const labels = paceStrip.querySelectorAll('.pace-strip-scen-lbl');
+    [t0, t1, t2].forEach((t, i) => { if (labels[i]) labels[i].style.left = pct(t); });
+
+    // Rebuild whole-hour axis below bar
+    const axis = paceStrip.querySelector('.pace-strip-axis');
+    if (axis) {
+      axis.innerHTML = '';
+      const firstHour = Math.ceil((tStart + 1) / 60) * 60;
+      for (let t = firstHour; t < tEnd; t += 60) {
+        const el = document.createElement('div');
+        el.className = 'pace-strip-axtime';
+        el.style.left = pct(t);
+        el.textContent = minToTime(t);
+        axis.appendChild(el);
+      }
+    }
+  }
+
+  // Projection marker and time label
+  let marker = track.querySelector('.pace-strip-proj');
+  const projTimeEl = paceStrip ? paceStrip.nextElementSibling : null;
+  const hasLabel   = projTimeEl && projTimeEl.classList.contains('proj-time');
+
+  if (projMin != null) {
+    if (!marker) {
+      marker = document.createElement('div');
+      marker.className = 'pace-strip-proj';
+      track.appendChild(marker);
+    }
+    marker.style.left = pct(projMin);
+    if (hasLabel) projTimeEl.textContent = '↓ projected: ' + minToTime(projMin);
+  } else {
+    if (marker) marker.remove();
+    if (hasLabel) projTimeEl.textContent = '';
+  }
+}
+
 function updateRunnerMarkers(runner) {
   const latest = getLatestInput(runner);
 
@@ -1258,42 +1324,13 @@ function updateRunnerMarkers(runner) {
     marker.style.left = Math.max(0, Math.min(100, pct)) + '%';
   });
 
-  // ── Pace strip tracks ──
+  // ── Pace strip tracks (dynamic scale) ──
   document.querySelectorAll(`.pace-strip-track[data-runner="${runner}"]`).forEach(track => {
     const targetIdx = parseInt(track.dataset.idx);
-    const trackStart = parseInt(track.dataset.trackStart);
-    const trackEnd = parseInt(track.dataset.trackEnd);
-    let marker = track.querySelector('.pace-strip-proj');
-
-    const paceStrip = track.closest('.pace-strip');
-    const projTimeEl = paceStrip ? paceStrip.nextElementSibling : null;
-    const hasLabel = projTimeEl && projTimeEl.classList.contains('proj-time');
-
-    if (!latest || targetIdx <= latest.idx) {
-      if (marker) marker.remove();
-      if (hasLabel) projTimeEl.textContent = '';
-      return;
-    }
-
-    const proj = projectTime(runner, latest.minutes, latest.idx, targetIdx);
-    const pct = (proj - trackStart) / (trackEnd - trackStart) * 100;
-
-    if (pct < -5 || pct > 105) {
-      if (marker) marker.remove();
-      if (hasLabel) projTimeEl.textContent = '';
-      return;
-    }
-
-    if (!marker) {
-      marker = document.createElement('div');
-      marker.className = 'pace-strip-proj';
-      track.appendChild(marker);
-    }
-    marker.style.left = Math.max(0, Math.min(100, pct)) + '%';
-
-    if (hasLabel) {
-      projTimeEl.textContent = '↓ projected: ' + minToTime(proj);
-    }
+    const projMin = (latest && targetIdx > latest.idx)
+      ? projectTime(runner, latest.minutes, latest.idx, targetIdx)
+      : null;
+    renderPaceStrip(track, projMin);
   });
 }
 
