@@ -227,6 +227,10 @@
     display: flex; gap: 14px; margin-top: 7px;
     font-size: 9px; color: var(--muted); letter-spacing: 0.04em;
   }
+  .arrival-tl-proj-times {
+    margin-top: 6px; font-size: 9px; color: var(--muted);
+    letter-spacing: 0.04em; line-height: 1.7; display: none;
+  }
   .tl-legend-item { display: flex; align-items: center; gap: 5px; }
   .tl-legend-solid {
     display: inline-block; width: 16px; height: 4px; border-radius: 2px;
@@ -543,7 +547,7 @@
              data-runner="billy" data-idx="3"
              data-scale-start="240" data-scale-end="600">
           <div class="arrival-tl-bar" style="left:7.8%;width:9.2%;background:var(--jon)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:74.7%;width:17.8%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="5" style="--c:var(--jon);left:74.7%;width:17.8%"></div>
           <div class="arrival-tl-cutoff" style="left:87.5%"></div>
         </div>
       </div>
@@ -559,6 +563,7 @@
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop</span>
       <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
+    <div class="arrival-tl-proj-times" id="ptimes-estanquinhos"></div>
   </div>
 
   <div class="shared-nexts">
@@ -663,7 +668,7 @@
              data-runner="billy" data-idx="5"
              data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:5.4%;width:11.9%;background:var(--jon)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:42.2%;width:16.5%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="7" style="--c:var(--jon);left:42.2%;width:16.5%"></div>
           <div class="arrival-tl-cutoff" style="left:94.4%"></div>
         </div>
       </div>
@@ -673,7 +678,7 @@
              data-runner="danielle" data-idx="2"
              data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:35.6%;width:7.2%;background:var(--dan)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--dan);left:77.4%;width:13.7%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="4" style="--c:var(--dan);left:77.4%;width:13.7%"></div>
           <div class="arrival-tl-cutoff" style="left:94.4%"></div>
         </div>
       </div>
@@ -689,6 +694,7 @@
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Chão da Lagoa)</span>
       <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
+    <div class="arrival-tl-proj-times" id="ptimes-curral"></div>
   </div>
 
   <div class="shared-nexts">
@@ -817,7 +823,7 @@
              data-runner="billy" data-idx="7"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:13.3%;width:24.7%;background:var(--jon)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:55.8%;width:29.7%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="9" style="--c:var(--jon);left:55.8%;width:29.7%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
@@ -826,7 +832,7 @@
              data-runner="heather" data-idx="3"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:54.7%;width:17.8%;background:var(--heather)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:77.2%;width:21.9%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="5" style="--c:var(--heather);left:77.2%;width:21.9%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
@@ -849,6 +855,7 @@
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Larano)</span>
       <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
+    <div class="arrival-tl-proj-times" id="ptimes-lagoa"></div>
   </div>
 
   <div class="shared-nexts">
@@ -1004,7 +1011,7 @@
              data-runner="heather" data-idx="5"
              data-scale-start="840" data-scale-end="1200">
           <div class="arrival-tl-bar" style="left:27.2%;width:21.9%;background:var(--heather)"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--heather);left:41.7%;width:25%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="6" style="--c:var(--heather);left:41.7%;width:25%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
@@ -1013,7 +1020,7 @@
              data-runner="billy" data-idx="9"
              data-scale-start="840" data-scale-end="1200">
           <div class="arrival-tl-bar" style="left:5.8%;width:29.7%;background:var(--jon);opacity:.4"></div>
-          <div class="arrival-tl-bar-next" style="--c:var(--jon);left:33.3%;width:33.3%"></div>
+          <div class="arrival-tl-bar-next" data-next-idx="10" style="--c:var(--jon);left:33.3%;width:33.3%"></div>
         </div>
       </div>
       <div class="arrival-tl-row">
@@ -1036,6 +1043,7 @@
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at finish (Machico)</span>
       <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
+    <div class="arrival-tl-proj-times" id="ptimes-larano"></div>
   </div>
 
   <div class="shared-nexts">
@@ -1350,34 +1358,50 @@ function updateRunnerMarkers(runner) {
     const t0 = RACE_DATA[runner].checkpoints[targetIdx].t[0];
     const t2 = RACE_DATA[runner].checkpoints[targetIdx].t[2];
 
+    // ── Solid bar (arrival at this station) ──
     if (!latest || targetIdx <= latest.idx) {
-      // Restore bar to original scenario range
       if (bar) {
         bar.style.left  = ((t0 - scaleStart) / span * 100).toFixed(1) + '%';
         bar.style.width = ((t2 - t0) / span * 100).toFixed(1) + '%';
       }
       if (marker) marker.remove();
-      return;
+    } else {
+      const proj    = projectTime(runner, latest.minutes, latest.idx, targetIdx);
+      const projPct = (proj - scaleStart) / span * 100;
+      if (bar) {
+        const bStart = Math.max(scaleStart, proj - 30);
+        const bEnd   = Math.min(scaleEnd,   proj + 30);
+        bar.style.left  = ((bStart - scaleStart) / span * 100).toFixed(1) + '%';
+        bar.style.width = ((bEnd - bStart) / span * 100).toFixed(1) + '%';
+      }
+      if (projPct < -2 || projPct > 102) { if (marker) marker.remove(); }
+      else {
+        if (!marker) {
+          marker = document.createElement('div');
+          marker.className = 'arrival-tl-proj';
+          track.appendChild(marker);
+        }
+        marker.style.left = Math.max(0, Math.min(100, projPct)).toFixed(1) + '%';
+      }
     }
 
-    const proj    = projectTime(runner, latest.minutes, latest.idx, targetIdx);
-    const projPct = (proj - scaleStart) / span * 100;
-
-    // Collapse bar to ±30 min projection band (clamped to track)
-    if (bar) {
-      const bStart = Math.max(scaleStart, proj - 30);
-      const bEnd   = Math.min(scaleEnd,   proj + 30);
-      bar.style.left  = ((bStart - scaleStart) / span * 100).toFixed(1) + '%';
-      bar.style.width = ((bEnd - bStart) / span * 100).toFixed(1) + '%';
+    // ── Dashed bar (projected at next stop) ──
+    const nextBar = track.querySelector('.arrival-tl-bar-next[data-next-idx]');
+    if (nextBar) {
+      const nextIdx = parseInt(nextBar.dataset.nextIdx);
+      const nextT0  = RACE_DATA[runner].checkpoints[nextIdx].t[0];
+      const nextT2  = RACE_DATA[runner].checkpoints[nextIdx].t[2];
+      if (!latest || latest.idx >= nextIdx) {
+        nextBar.style.left  = ((nextT0 - scaleStart) / span * 100).toFixed(1) + '%';
+        nextBar.style.width = ((nextT2 - nextT0) / span * 100).toFixed(1) + '%';
+      } else {
+        const projNext = projectTime(runner, latest.minutes, latest.idx, nextIdx);
+        const bStart   = Math.max(scaleStart, projNext - 30);
+        const bEnd     = Math.min(scaleEnd,   projNext + 30);
+        nextBar.style.left  = ((bStart - scaleStart) / span * 100).toFixed(1) + '%';
+        nextBar.style.width = ((bEnd - bStart) / span * 100).toFixed(1) + '%';
+      }
     }
-
-    if (projPct < -2 || projPct > 102) { if (marker) marker.remove(); return; }
-    if (!marker) {
-      marker = document.createElement('div');
-      marker.className = 'arrival-tl-proj';
-      track.appendChild(marker);
-    }
-    marker.style.left = Math.max(0, Math.min(100, projPct)).toFixed(1) + '%';
   });
 
   // ── Pace strip tracks (dynamic scale) ──
@@ -1412,6 +1436,42 @@ function updateStatus() {
     dot.classList.remove('active');
     hint.textContent = 'enter checkpoint times to project arrival';
   }
+}
+
+// Map each station to the runners whose dashed bar appears there, and which next checkpoint it targets
+const STATION_NEXT_BARS = {
+  estanquinhos: [{ runner: 'billy',    nextIdx: 5,  nextName: 'Curral' }],
+  curral:       [{ runner: 'billy',    nextIdx: 7,  nextName: 'Lagoa'  },
+                 { runner: 'danielle', nextIdx: 4,  nextName: 'Lagoa'  }],
+  lagoa:        [{ runner: 'billy',    nextIdx: 9,  nextName: 'Larano' },
+                 { runner: 'heather',  nextIdx: 5,  nextName: 'Larano' }],
+  larano:       [{ runner: 'heather',  nextIdx: 6,  nextName: 'Machico'},
+                 { runner: 'billy',    nextIdx: 10, nextName: 'Machico'}],
+};
+
+const RUNNER_COLOR = { billy: 'var(--jon)', danielle: 'var(--dan)', heather: 'var(--heather)' };
+
+function updateProjTimes() {
+  Object.entries(STATION_NEXT_BARS).forEach(([station, items]) => {
+    const el = document.getElementById(`ptimes-${station}`);
+    if (!el) return;
+    const parts = [];
+    items.forEach(({ runner, nextIdx, nextName }) => {
+      const latest = getLatestInput(runner);
+      if (!latest || latest.idx >= nextIdx) return;
+      const proj  = projectTime(runner, latest.minutes, latest.idx, nextIdx);
+      const name  = runner.charAt(0).toUpperCase() + runner.slice(1);
+      const color = RUNNER_COLOR[runner];
+      parts.push(`<span style="color:${color}">${name}</span> ~${minToTime(proj)} at ${nextName}`);
+    });
+    if (parts.length) {
+      el.innerHTML = '↓ ' + parts.join(' &nbsp;·&nbsp; ');
+      el.style.display = '';
+    } else {
+      el.innerHTML = '';
+      el.style.display = 'none';
+    }
+  });
 }
 
 const FINISH_IDX   = { billy: 10, danielle: 7, heather: 6 };
@@ -1460,6 +1520,7 @@ function handleInput(input) {
   updateAllMarkers();
   updateStatus();
   updateFinishProjections();
+  updateProjTimes();
 }
 
 function toggleTracking() {
@@ -1479,6 +1540,7 @@ function clearAll() {
   updateAllMarkers();
   updateStatus();
   updateFinishProjections();
+  updateProjTimes();
 }
 
 function saveInputs() {
@@ -1510,6 +1572,7 @@ loadInputs();
 updateAllMarkers();
 updateStatus();
 updateFinishProjections();
+updateProjTimes();
 </script>
 </body>
 </html>
