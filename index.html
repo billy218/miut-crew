@@ -1340,30 +1340,44 @@ function updateRunnerMarkers(runner) {
 
   // ── Arrival timeline tracks ──
   document.querySelectorAll(`.arrival-tl-track[data-runner="${runner}"]`).forEach(track => {
-    const targetIdx = parseInt(track.dataset.idx);
+    const targetIdx  = parseInt(track.dataset.idx);
     const scaleStart = parseInt(track.dataset.scaleStart);
-    const scaleEnd = parseInt(track.dataset.scaleEnd);
-    let marker = track.querySelector('.arrival-tl-proj');
+    const scaleEnd   = parseInt(track.dataset.scaleEnd);
+    const span       = scaleEnd - scaleStart;
+    const bar        = track.querySelector('.arrival-tl-bar');
+    let   marker     = track.querySelector('.arrival-tl-proj');
+
+    const t0 = RACE_DATA[runner].checkpoints[targetIdx].t[0];
+    const t2 = RACE_DATA[runner].checkpoints[targetIdx].t[2];
 
     if (!latest || targetIdx <= latest.idx) {
+      // Restore bar to original scenario range
+      if (bar) {
+        bar.style.left  = ((t0 - scaleStart) / span * 100).toFixed(1) + '%';
+        bar.style.width = ((t2 - t0) / span * 100).toFixed(1) + '%';
+      }
       if (marker) marker.remove();
       return;
     }
 
-    const proj = projectTime(runner, latest.minutes, latest.idx, targetIdx);
-    const pct = (proj - scaleStart) / (scaleEnd - scaleStart) * 100;
+    const proj    = projectTime(runner, latest.minutes, latest.idx, targetIdx);
+    const projPct = (proj - scaleStart) / span * 100;
 
-    if (pct < -2 || pct > 102) {
-      if (marker) marker.remove();
-      return;
+    // Collapse bar to ±30 min projection band (clamped to track)
+    if (bar) {
+      const bStart = Math.max(scaleStart, proj - 30);
+      const bEnd   = Math.min(scaleEnd,   proj + 30);
+      bar.style.left  = ((bStart - scaleStart) / span * 100).toFixed(1) + '%';
+      bar.style.width = ((bEnd - bStart) / span * 100).toFixed(1) + '%';
     }
 
+    if (projPct < -2 || projPct > 102) { if (marker) marker.remove(); return; }
     if (!marker) {
       marker = document.createElement('div');
       marker.className = 'arrival-tl-proj';
       track.appendChild(marker);
     }
-    marker.style.left = Math.max(0, Math.min(100, pct)) + '%';
+    marker.style.left = Math.max(0, Math.min(100, projPct)).toFixed(1) + '%';
   });
 
   // ── Pace strip tracks (dynamic scale) ──
