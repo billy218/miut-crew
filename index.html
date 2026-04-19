@@ -1253,15 +1253,49 @@ function renderPaceStrip(track, projMin, projFinish) {
     }
   }
 
-  // ── Scenario ticks — always anchored at t0/t1/t2 on the track ──
-  const ticks = track.querySelectorAll('.pace-strip-tick');
-  [t0, t1, t2].forEach((t, i) => { if (ticks[i]) ticks[i].style.left = pct(t); });
-
+  const ticks    = track.querySelectorAll('.pace-strip-tick');
   const paceStrip = track.closest('.pace-strip');
+  const labels    = paceStrip ? paceStrip.querySelectorAll('.pace-strip-scen-lbl') : [];
+
+  if (projMin != null) {
+    // ── Data mode: ticks + labels show the projection band ──
+    const bandTimes = [projMin - 30, projMin, projMin + 30];
+    const bandNames = ['−30m', '↓', '+30m'];
+    bandTimes.forEach((t, i) => {
+      if (ticks[i]) ticks[i].style.left = pct(t);
+      if (labels[i]) {
+        labels[i].style.left = pct(t);
+        const nameEl = labels[i].querySelector('.pace-strip-scen-name');
+        const timeEl = labels[i].querySelector('.pace-strip-scen-time');
+        if (nameEl) nameEl.textContent = bandNames[i];
+        if (timeEl) {
+          timeEl.textContent = minToTime(t);
+          timeEl.style.color      = i === 1 ? 'var(--text)' : '';
+          timeEl.style.fontWeight = i === 1 ? '600' : '';
+        }
+      }
+    });
+  } else {
+    // ── No-data mode: ticks + labels at original scenario positions ──
+    const scenarios = RACE_DATA[runner].scenarios;
+    const cpTimes   = RACE_DATA[runner].checkpoints[idx].t;
+    [t0, t1, t2].forEach((t, i) => {
+      if (ticks[i]) ticks[i].style.left = pct(t);
+      if (labels[i]) {
+        labels[i].style.left = pct(t);
+        const nameEl = labels[i].querySelector('.pace-strip-scen-name');
+        const timeEl = labels[i].querySelector('.pace-strip-scen-time');
+        if (nameEl) nameEl.textContent = scenarios[i];
+        if (timeEl) {
+          timeEl.textContent  = minToTime(cpTimes[i]);
+          timeEl.style.color      = '';
+          timeEl.style.fontWeight = '';
+        }
+      }
+    });
+  }
+
   if (paceStrip) {
-    // Reposition scenario labels above bar
-    const labels = paceStrip.querySelectorAll('.pace-strip-scen-lbl');
-    [t0, t1, t2].forEach((t, i) => { if (labels[i]) labels[i].style.left = pct(t); });
 
     // Rebuild whole-hour axis below bar
     const axis = paceStrip.querySelector('.pace-strip-axis');
