@@ -133,10 +133,9 @@
     box-shadow: 0 0 5px 1px rgba(255,255,255,0.35);
     z-index: 3; pointer-events: none;
   }
-  .proj-time {
-    padding: 2px 16px 8px;
-    font-size: 12px; font-weight: 500; color: var(--accent); letter-spacing: 0.04em;
-  }
+  .proj-time { padding: 2px 16px 8px; letter-spacing: 0.04em; }
+  .proj-time strong { font-size: 14px; font-weight: 600; color: var(--accent); }
+  .proj-time span { font-size: 10px; color: var(--muted); margin-left: 6px; }
   .proj-time:empty { display: none; }
 
   /* ── Projected finish (tracking panel + end card) ── */
@@ -277,8 +276,8 @@
   }
   .pace-strip-tick {
     position: absolute; top: -4px; bottom: -4px;
-    width: 2px; background: var(--bg);
-    transform: translateX(-50%); border-radius: 1px;
+    width: 2px; background: var(--muted);
+    transform: translateX(-50%); border-radius: 1px; z-index: 1;
   }
   /* Scenario labels above the track — stacked name + exact time */
   .pace-strip-scenarios {
@@ -597,11 +596,10 @@
       <div class="pace-strip-track"
            data-runner="billy" data-idx="3" data-t0="268" data-t2="301"
            data-track-start="210" data-track-end="360">
-        <div class="pace-strip-bar" style="left:38.7%;width:22.0%;background:var(--jon)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:51.5%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:38.7%;width:22.0%;background:var(--jon)"></div>
+        <div class="pace-strip-tick" style="left:38.7%"></div>
+        <div class="pace-strip-tick" style="left:50.0%"></div>
+        <div class="pace-strip-tick" style="left:60.7%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:20.0%">04:00</div>
@@ -728,11 +726,10 @@
       <div class="pace-strip-track"
            data-runner="billy" data-idx="5" data-t0="509" data-t2="573"
            data-track-start="420" data-track-end="660">
-        <div class="pace-strip-bar" style="left:37.1%;width:26.7%;background:var(--jon)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:50%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:37.1%;width:26.7%;background:var(--jon)"></div>
+        <div class="pace-strip-tick" style="left:37.1%"></div>
+        <div class="pace-strip-tick" style="left:50.4%"></div>
+        <div class="pace-strip-tick" style="left:63.8%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:25.0%">08:00</div>
@@ -762,11 +759,10 @@
       <div class="pace-strip-track"
            data-runner="danielle" data-idx="2" data-t0="672" data-t2="711"
            data-track-start="630" data-track-end="750">
-        <div class="pace-strip-bar" style="left:35.0%;width:32.5%;background:var(--dan)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:51.3%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:35.0%;width:32.5%;background:var(--dan)"></div>
+        <div class="pace-strip-tick" style="left:35.0%"></div>
+        <div class="pace-strip-tick" style="left:51.7%"></div>
+        <div class="pace-strip-tick" style="left:67.5%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:25.0%">11:00</div>
@@ -890,11 +886,10 @@
       <div class="pace-strip-track"
            data-runner="billy" data-idx="7" data-t0="708" data-t2="797"
            data-track-start="630" data-track-end="870">
-        <div class="pace-strip-bar" style="left:32.5%;width:37.1%;background:var(--jon)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:50.6%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:32.5%;width:37.1%;background:var(--jon)"></div>
+        <div class="pace-strip-tick" style="left:32.5%"></div>
+        <div class="pace-strip-tick" style="left:51.3%"></div>
+        <div class="pace-strip-tick" style="left:69.6%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:12.5%">11:00</div>
@@ -925,11 +920,10 @@
       <div class="pace-strip-track"
            data-runner="heather" data-idx="3" data-t0="857" data-t2="921"
            data-track-start="780" data-track-end="990">
-        <div class="pace-strip-bar" style="left:36.7%;width:30.5%;background:var(--heather)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:34.4%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:36.7%;width:30.5%;background:var(--heather)"></div>
+        <div class="pace-strip-tick" style="left:36.7%"></div>
+        <div class="pace-strip-tick" style="left:47.1%"></div>
+        <div class="pace-strip-tick" style="left:67.1%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:28.6%">14:00</div>
@@ -959,11 +953,10 @@
       <div class="pace-strip-track"
            data-runner="danielle" data-idx="4" data-t0="898" data-t2="972"
            data-track-start="810" data-track-end="1050">
-        <div class="pace-strip-bar" style="left:36.7%;width:30.8%;background:var(--dan)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:50%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:36.7%;width:30.8%;background:var(--dan)"></div>
+        <div class="pace-strip-tick" style="left:36.7%"></div>
+        <div class="pace-strip-tick" style="left:52.1%"></div>
+        <div class="pace-strip-tick" style="left:67.5%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:12.5%">14:00</div>
@@ -1073,11 +1066,10 @@
       <div class="pace-strip-track"
            data-runner="heather" data-idx="5" data-t0="938" data-t2="1017"
            data-track-start="870" data-track-end="1080">
-        <div class="pace-strip-bar" style="left:32.4%;width:37.6%;background:var(--heather)">
-          <div class="pace-strip-tick" style="left:0%"></div>
-          <div class="pace-strip-tick" style="left:32.9%"></div>
-          <div class="pace-strip-tick" style="left:100%"></div>
-        </div>
+        <div class="pace-strip-bar" style="left:32.4%;width:37.6%;background:var(--heather)"></div>
+        <div class="pace-strip-tick" style="left:32.4%"></div>
+        <div class="pace-strip-tick" style="left:44.8%"></div>
+        <div class="pace-strip-tick" style="left:70.0%"></div>
       </div>
       <div class="pace-strip-axis">
         <div class="pace-strip-axtime" style="left:14.3%">15:00</div>
@@ -1228,15 +1220,16 @@ function getLatestInput(runner) {
 }
 
 // Renders a pace strip from scratch, expanding the track if projMin falls outside bounds.
-// projMin = projected arrival in minutes-from-midnight, or null for no projection.
-function renderPaceStrip(track, projMin) {
+// projMin     = projected arrival in minutes-from-midnight, or null for no projection.
+// projFinish  = projected finish time in minutes-from-midnight, or null.
+function renderPaceStrip(track, projMin, projFinish) {
   const runner = track.dataset.runner;
   const idx    = parseInt(track.dataset.idx);
   const t0     = parseInt(track.dataset.t0);
   const t2     = parseInt(track.dataset.t2);
   const t1     = RACE_DATA[runner].checkpoints[idx].t[1];
 
-  // Start with base bounds; expand to include projection with 30-min padding
+  // Base bounds from data attributes; expand to accommodate projection (±30 min pad)
   let tStart = parseInt(track.dataset.trackStart);
   let tEnd   = parseInt(track.dataset.trackEnd);
   if (projMin != null) {
@@ -1246,12 +1239,23 @@ function renderPaceStrip(track, projMin) {
   const span = tEnd - tStart;
   const pct  = t => ((t - tStart) / span * 100).toFixed(1) + '%';
 
-  // Update coloured bar position
+  // ── Coloured bar ──
+  // Without projection: spans full scenario range (t0 → t2).
+  // With projection: collapses to a ±30 min band around projMin.
   const bar = track.querySelector('.pace-strip-bar');
   if (bar) {
-    bar.style.left  = pct(t0);
-    bar.style.width = ((t2 - t0) / span * 100).toFixed(1) + '%';
+    if (projMin != null) {
+      bar.style.left  = pct(projMin - 30);
+      bar.style.width = (60 / span * 100).toFixed(1) + '%';
+    } else {
+      bar.style.left  = pct(t0);
+      bar.style.width = ((t2 - t0) / span * 100).toFixed(1) + '%';
+    }
   }
+
+  // ── Scenario ticks — always anchored at t0/t1/t2 on the track ──
+  const ticks = track.querySelectorAll('.pace-strip-tick');
+  [t0, t1, t2].forEach((t, i) => { if (ticks[i]) ticks[i].style.left = pct(t); });
 
   const paceStrip = track.closest('.pace-strip');
   if (paceStrip) {
@@ -1274,7 +1278,7 @@ function renderPaceStrip(track, projMin) {
     }
   }
 
-  // Projection marker and time label
+  // ── Projection marker and label ──
   let marker = track.querySelector('.pace-strip-proj');
   const projTimeEl = paceStrip ? paceStrip.nextElementSibling : null;
   const hasLabel   = projTimeEl && projTimeEl.classList.contains('proj-time');
@@ -1286,10 +1290,14 @@ function renderPaceStrip(track, projMin) {
       track.appendChild(marker);
     }
     marker.style.left = pct(projMin);
-    if (hasLabel) projTimeEl.textContent = '↓ projected: ' + minToTime(projMin);
+    if (hasLabel) {
+      const finHtml = projFinish != null
+        ? `<span>finish ~${minToTime(projFinish)}</span>` : '';
+      projTimeEl.innerHTML = `<strong>${minToTime(projMin)}</strong>${finHtml}`;
+    }
   } else {
     if (marker) marker.remove();
-    if (hasLabel) projTimeEl.textContent = '';
+    if (hasLabel) projTimeEl.innerHTML = '';
   }
 }
 
@@ -1327,10 +1335,12 @@ function updateRunnerMarkers(runner) {
   // ── Pace strip tracks (dynamic scale) ──
   document.querySelectorAll(`.pace-strip-track[data-runner="${runner}"]`).forEach(track => {
     const targetIdx = parseInt(track.dataset.idx);
-    const projMin = (latest && targetIdx > latest.idx)
-      ? projectTime(runner, latest.minutes, latest.idx, targetIdx)
-      : null;
-    renderPaceStrip(track, projMin);
+    let projMin = null, projFinish = null;
+    if (latest && targetIdx > latest.idx) {
+      projMin    = projectTime(runner, latest.minutes, latest.idx, targetIdx);
+      projFinish = projectTime(runner, latest.minutes, latest.idx, FINISH_IDX[runner]);
+    }
+    renderPaceStrip(track, projMin, projFinish);
   });
 }
 
