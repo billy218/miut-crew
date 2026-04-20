@@ -1037,7 +1037,8 @@
       <div class="runner-hdr-name" style="color:var(--jon)">Billy</div>
       <div class="runner-hdr-sub">km 96.0 of 108.9 — no crew access</div>
     </div>
-    <div class="absent-note">Billy passes through Larano but crew assistance is not permitted here.<br><br>Expected: &nbsp;14:21 (16h) &nbsp;·&nbsp; 15:14 (17h) &nbsp;·&nbsp; 16:08 (18h)</div>
+    <div class="absent-note">Billy passes through Larano but crew assistance is not permitted here.</div>
+    <div class="proj-time" data-runner="billy" data-station="larano-absent"></div>
   </div>
 
   <div class="runner-block">
@@ -1046,7 +1047,8 @@
       <div class="runner-hdr-name" style="color:var(--dan)">Danielle</div>
       <div class="runner-hdr-sub">km 63.9 of 76.8 — no crew access</div>
     </div>
-    <div class="absent-note">Danielle passes through Larano but crew assistance is not permitted here.<br><br>Expected: &nbsp;18:03 (13h) &nbsp;·&nbsp; 18:54 (14h) &nbsp;·&nbsp; 19:45 (15h)</div>
+    <div class="absent-note">Danielle passes through Larano but crew assistance is not permitted here.</div>
+    <div class="proj-time" data-runner="danielle" data-station="larano-absent"></div>
   </div>
 </div>
 
@@ -1357,6 +1359,22 @@ function updateRunnerMarkers(runner) {
     }
     renderPaceStrip(track, projMin, projFinish);
   });
+
+  // ── Absent-runner proj-time displays (e.g. Billy/Danielle at Larano) ──
+  // These share the same .proj-time CSS but have no pace strip — drive them directly.
+  const ABSENT_PROJ_IDX = { billy: 9, danielle: 6, heather: null };
+  const absentIdx = ABSENT_PROJ_IDX[runner];
+  if (absentIdx != null) {
+    document.querySelectorAll(`.proj-time[data-runner="${runner}"][data-station="larano-absent"]`).forEach(el => {
+      if (latest && absentIdx > latest.idx) {
+        const proj       = projectTime(runner, latest.minutes, latest.idx, absentIdx);
+        const projFinish = projectTime(runner, latest.minutes, latest.idx, FINISH_IDX[runner]);
+        el.innerHTML = `<strong>${minToTime(proj)}</strong><span>finish ~${minToTime(projFinish)}</span>`;
+      } else {
+        el.innerHTML = '';
+      }
+    });
+  }
 }
 
 function updateAllMarkers() {
