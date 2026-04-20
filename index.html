@@ -173,9 +173,6 @@
   }
   .station-num { font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
   .station-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; }
-  .station-cutoff { text-align: right; }
-  .station-cutoff-label { font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
-  .station-cutoff-time { font-size: 16px; font-weight: 500; color: var(--red); }
   .station-info {
     padding: 9px 16px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
@@ -193,8 +190,9 @@
   .arrival-tl { padding: 12px 16px 10px; border-bottom: 1px solid var(--border); }
   .arrival-tl-title { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
   .arrival-tl-rows { display: flex; flex-direction: column; gap: 6px; }
-  .arrival-tl-row { display: flex; align-items: center; gap: 8px; height: 8px; }
-  .arrival-tl-swatch { flex-shrink: 0; }
+  .arrival-tl-row { display: flex; align-items: center; gap: 8px; }
+  .arrival-tl-label { width: 68px; flex-shrink: 0; display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--muted); letter-spacing: 0.04em; }
+  .arrival-tl-time { width: 72px; flex-shrink: 0; text-align: right; font-size: 9px; color: var(--muted); letter-spacing: 0.03em; white-space: nowrap; }
   .arrival-tl-track {
     flex: 1; position: relative; height: 6px;
     background: var(--border); border-radius: 3px; overflow: visible;
@@ -209,20 +207,16 @@
     );
     opacity: 0.55;
   }
-  .arrival-tl-cutoff {
-    position: absolute; top: -3px; bottom: -3px; width: 1px;
-    background: var(--red); opacity: 0.7;
-  }
   .arrival-tl-axis {
-    position: relative; height: 14px; margin-top: 5px; margin-left: 16px;
+    position: relative; height: 14px; margin-top: 5px;
+    margin-left: 76px; margin-right: 80px;
   }
   .arrival-tl-tick {
     position: absolute; font-size: 9px; color: var(--muted);
     transform: translateX(-50%); white-space: nowrap;
   }
-  .arrival-tl-tick.t-start  { transform: none; }
-  .arrival-tl-tick.t-end    { transform: translateX(-100%); }
-  .arrival-tl-tick.t-cutoff { color: var(--red); }
+  .arrival-tl-tick.t-start { transform: none; }
+  .arrival-tl-tick.t-end   { transform: translateX(-100%); }
   .arrival-tl-legend {
     display: flex; gap: 14px; margin-top: 7px;
     font-size: 9px; color: var(--muted); letter-spacing: 0.04em;
@@ -247,15 +241,16 @@
   }
 
   /* ── Shared "what's next" ── */
-  .shared-nexts { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); }
-  .nexts-title { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .next-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-  .next-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; }
-  .next-box-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
-  .next-box-dest { font-size: 11px; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .next-box-km { font-size: 14px; font-weight: 500; color: var(--accent); }
-  .next-box-km span { font-size: 10px; color: var(--muted); font-weight: 400; }
-  .next-box-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+  .shared-nexts { padding: 7px 16px 9px; border-bottom: 1px solid var(--border); }
+  .next-legs { display: flex; flex-direction: column; gap: 4px; }
+  .next-leg { display: flex; align-items: baseline; gap: 7px; font-size: 11px; }
+  .next-leg-dest { color: var(--text); }
+  .next-leg-badge {
+    font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--accent);
+    border-radius: 3px; padding: 0 4px; line-height: 1.6;
+  }
+  .next-leg-meta { color: var(--muted); font-size: 10px; margin-left: auto; }
 
   /* ── Runner blocks ── */
   .runner-block { border-bottom: 1px solid var(--border); }
@@ -526,10 +521,6 @@
       <div class="station-num">Crew Stop 1 of 4</div>
       <div class="station-name">Estanquinhos</div>
     </div>
-    <div class="station-cutoff">
-      <div class="station-cutoff-label">Cut-off</div>
-      <div class="station-cutoff-time">09:15</div>
-    </div>
   </div>
   <div class="station-info">
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.7450,-16.9300" target="_blank">
@@ -542,21 +533,21 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div> Billy</div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="3"
              data-scale-start="240" data-scale-end="600">
           <div class="arrival-tl-bar" style="left:7.8%;width:9.2%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="5" style="--c:var(--jon);left:74.7%;width:17.8%"></div>
-          <div class="arrival-tl-cutoff" style="left:87.5%"></div>
         </div>
+        <div class="arrival-tl-time">04:28–05:01</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
       <span class="arrival-tl-tick t-start" style="left:0%">04:00</span>
       <span class="arrival-tl-tick" style="left:33.3%">06:00</span>
       <span class="arrival-tl-tick" style="left:66.7%">08:00</span>
-      <span class="arrival-tl-tick t-cutoff" style="left:87.5%">⚑ 09:15</span>
+      <span class="arrival-tl-tick t-end" style="left:100%">10:00</span>
     </div>
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
@@ -567,22 +558,9 @@
   </div>
 
   <div class="shared-nexts">
-    <div class="nexts-title">What's next</div>
-    <div class="next-grid">
-      <div class="next-box">
-        <div class="next-box-lbl">→ Next aid</div>
-        <div class="next-box-dest">Chão dos Louros</div>
-        <div class="next-box-km">14.0 <span>km</span></div>
-        <div class="next-box-sub">490↑ &nbsp;1,270↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~2 – 2½ hrs</div>
-      </div>
-      <div class="next-box">
-        <div class="next-box-lbl">→ Next crew</div>
-        <div class="next-box-dest">Curral das Freiras</div>
-        <div class="next-box-km">28.5 <span>km</span></div>
-        <div class="next-box-sub">1,785↑ &nbsp;2,715↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~4 – 4½ hrs</div>
-      </div>
+    <div class="next-legs">
+      <div class="next-leg"><span class="next-leg-dest">→ Chão dos Louros</span><span class="next-leg-meta">14.0 km · ~2–2½ h</span></div>
+      <div class="next-leg"><span class="next-leg-dest">→ Curral das Freiras</span><span class="next-leg-badge">crew</span><span class="next-leg-meta">28.5 km · ~4–4½ h</span></div>
     </div>
   </div>
 
@@ -647,10 +625,6 @@
       <div class="station-num">Crew Stop 2 of 4</div>
       <div class="station-name">Curral das Freiras</div>
     </div>
-    <div class="station-cutoff">
-      <div class="station-cutoff-label">Cut-off</div>
-      <div class="station-cutoff-time">16:30</div>
-    </div>
   </div>
   <div class="station-info">
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.7200,-16.9700" target="_blank">
@@ -663,31 +637,31 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div> Billy</div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="5"
              data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:5.4%;width:11.9%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="7" style="--c:var(--jon);left:42.2%;width:16.5%"></div>
-          <div class="arrival-tl-cutoff" style="left:94.4%"></div>
         </div>
+        <div class="arrival-tl-time">08:29–09:33</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div> Danielle</div>
         <div class="arrival-tl-track"
              data-runner="danielle" data-idx="2"
              data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:35.6%;width:7.2%;background:var(--dan)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="4" style="--c:var(--dan);left:77.4%;width:13.7%"></div>
-          <div class="arrival-tl-cutoff" style="left:94.4%"></div>
         </div>
+        <div class="arrival-tl-time">11:12–11:51</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
       <span class="arrival-tl-tick t-start" style="left:0%">08:00</span>
       <span class="arrival-tl-tick" style="left:33.3%">11:00</span>
       <span class="arrival-tl-tick" style="left:66.7%">14:00</span>
-      <span class="arrival-tl-tick t-cutoff t-end" style="left:94.4%">⚑ 16:30</span>
+      <span class="arrival-tl-tick t-end" style="left:100%">17:00</span>
     </div>
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
@@ -698,22 +672,9 @@
   </div>
 
   <div class="shared-nexts">
-    <div class="nexts-title">What's next</div>
-    <div class="next-grid">
-      <div class="next-box">
-        <div class="next-box-lbl">→ Next aid</div>
-        <div class="next-box-dest">Pico Ruivo</div>
-        <div class="next-box-km">11.0 <span>km</span></div>
-        <div class="next-box-sub">1,430↑ &nbsp;320↓ · biggest climb</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~2 hrs</div>
-      </div>
-      <div class="next-box">
-        <div class="next-box-lbl">→ Next crew</div>
-        <div class="next-box-dest">Chão da Lagoa</div>
-        <div class="next-box-km">20.6 <span>km</span></div>
-        <div class="next-box-sub">1,910↑ &nbsp;1,080↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~3 – 4 hrs</div>
-      </div>
+    <div class="next-legs">
+      <div class="next-leg"><span class="next-leg-dest">→ Pico Ruivo</span><span class="next-leg-meta">11.0 km · ~2 h</span></div>
+      <div class="next-leg"><span class="next-leg-dest">→ Chão da Lagoa</span><span class="next-leg-badge">crew</span><span class="next-leg-meta">20.6 km · ~3–4 h</span></div>
     </div>
   </div>
 
@@ -802,10 +763,6 @@
       <div class="station-num">Crew Stop 3 of 4</div>
       <div class="station-name">Chão da Lagoa</div>
     </div>
-    <div class="station-cutoff">
-      <div class="station-cutoff-label">Cut-off</div>
-      <div class="station-cutoff-time">23:30</div>
-    </div>
   </div>
   <div class="station-info">
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=32.71183,-16.91083" target="_blank">
@@ -818,30 +775,33 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div> Billy</div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="7"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:13.3%;width:24.7%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="9" style="--c:var(--jon);left:55.8%;width:29.7%"></div>
         </div>
+        <div class="arrival-tl-time">11:48–13:17</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-heather"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-heather"></div> Heather</div>
         <div class="arrival-tl-track"
              data-runner="heather" data-idx="3"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:54.7%;width:17.8%;background:var(--heather)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="5" style="--c:var(--heather);left:77.2%;width:21.9%"></div>
         </div>
+        <div class="arrival-tl-time">14:17–15:21</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div> Danielle</div>
         <div class="arrival-tl-track"
              data-runner="danielle" data-idx="4"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:66.1%;width:20.6%;background:var(--dan)"></div>
         </div>
+        <div class="arrival-tl-time">14:58–16:12</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
@@ -859,22 +819,9 @@
   </div>
 
   <div class="shared-nexts">
-    <div class="nexts-title">What's next</div>
-    <div class="next-grid">
-      <div class="next-box">
-        <div class="next-box-lbl">→ Next aid</div>
-        <div class="next-box-dest">Portela</div>
-        <div class="next-box-km">11.9 <span>km</span></div>
-        <div class="next-box-sub">95↑ &nbsp;975↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~1¼ – 2½ hrs</div>
-      </div>
-      <div class="next-box">
-        <div class="next-box-lbl">→ Finish</div>
-        <div class="next-box-dest">Machico</div>
-        <div class="next-box-km">29.9 <span>km</span></div>
-        <div class="next-box-sub">360↑ &nbsp;2,835↓ remain</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~3½ – 5½ hrs</div>
-      </div>
+    <div class="next-legs">
+      <div class="next-leg"><span class="next-leg-dest">→ Portela</span><span class="next-leg-meta">11.9 km · ~1¼–2½ h</span></div>
+      <div class="next-leg"><span class="next-leg-dest">→ Machico</span><span class="next-leg-badge">finish</span><span class="next-leg-meta">29.9 km · ~3½–5½ h</span></div>
     </div>
   </div>
 
@@ -990,10 +937,6 @@
       <div class="station-num">Crew Stop 4 of 4</div>
       <div class="station-name">Larano</div>
     </div>
-    <div class="station-cutoff">
-      <div class="station-cutoff-label">Cut-off</div>
-      <div class="station-cutoff-time" style="color:var(--muted);font-size:13px">none</div>
-    </div>
   </div>
   <div class="station-info">
     <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Larano,Madeira" target="_blank">
@@ -1006,30 +949,33 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-heather"></div></div>
+        <div class="arrival-tl-label"><div class="swatch swatch-heather"></div> Heather</div>
         <div class="arrival-tl-track"
              data-runner="heather" data-idx="5"
              data-scale-start="840" data-scale-end="1200">
           <div class="arrival-tl-bar" style="left:27.2%;width:21.9%;background:var(--heather)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="6" style="--c:var(--heather);left:41.7%;width:25%"></div>
         </div>
+        <div class="arrival-tl-time">15:38–16:57</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-jon"></div></div>
+        <div class="arrival-tl-label" style="opacity:.5"><div class="swatch swatch-jon"></div> Billy</div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="9"
              data-scale-start="840" data-scale-end="1200">
           <div class="arrival-tl-bar" style="left:5.8%;width:29.7%;background:var(--jon);opacity:.4"></div>
           <div class="arrival-tl-bar-next" data-next-idx="10" style="--c:var(--jon);left:33.3%;width:33.3%"></div>
         </div>
+        <div class="arrival-tl-time" style="opacity:.5">14:21–16:08</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-swatch"><div class="swatch swatch-dan"></div></div>
+        <div class="arrival-tl-label" style="opacity:.5"><div class="swatch swatch-dan"></div> Danielle</div>
         <div class="arrival-tl-track"
              data-runner="danielle" data-idx="6"
              data-scale-start="840" data-scale-end="1200">
           <div class="arrival-tl-bar" style="left:67.5%;width:28.3%;background:var(--dan);opacity:.4"></div>
         </div>
+        <div class="arrival-tl-time" style="opacity:.5">18:03–19:45</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
@@ -1047,15 +993,8 @@
   </div>
 
   <div class="shared-nexts">
-    <div class="nexts-title">What's next</div>
-    <div class="next-grid">
-      <div class="next-box">
-        <div class="next-box-lbl">→ Finish</div>
-        <div class="next-box-dest">Machico</div>
-        <div class="next-box-km">12.9 <span>km</span></div>
-        <div class="next-box-sub">230↑ &nbsp;315↓</div>
-        <div class="next-box-sub" style="color:var(--accent);margin-top:5px">~1¼ – 1½ hrs</div>
-      </div>
+    <div class="next-legs">
+      <div class="next-leg"><span class="next-leg-dest">→ Machico</span><span class="next-leg-badge">finish</span><span class="next-leg-meta">12.9 km · ~1¼–1½ h</span></div>
     </div>
   </div>
 
@@ -1358,6 +1297,8 @@ function updateRunnerMarkers(runner) {
     const t0 = RACE_DATA[runner].checkpoints[targetIdx].t[0];
     const t2 = RACE_DATA[runner].checkpoints[targetIdx].t[2];
 
+    const timeEl = track.parentElement ? track.parentElement.querySelector('.arrival-tl-time') : null;
+
     // ── Solid bar (arrival at this station) ──
     if (!latest || targetIdx <= latest.idx) {
       if (bar) {
@@ -1365,6 +1306,7 @@ function updateRunnerMarkers(runner) {
         bar.style.width = ((t2 - t0) / span * 100).toFixed(1) + '%';
       }
       if (marker) marker.remove();
+      if (timeEl) { timeEl.textContent = minToTime(t0) + '–' + minToTime(t2); timeEl.style.color = ''; }
     } else {
       const proj    = projectTime(runner, latest.minutes, latest.idx, targetIdx);
       const projPct = (proj - scaleStart) / span * 100;
@@ -1383,6 +1325,7 @@ function updateRunnerMarkers(runner) {
         }
         marker.style.left = Math.max(0, Math.min(100, projPct)).toFixed(1) + '%';
       }
+      if (timeEl) { timeEl.textContent = '~' + minToTime(proj); timeEl.style.color = 'var(--accent)'; }
     }
 
     // ── Dashed bar (projected at next stop) ──
