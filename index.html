@@ -191,8 +191,9 @@
   .arrival-tl-title { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
   .arrival-tl-rows { display: flex; flex-direction: column; gap: 6px; }
   .arrival-tl-row { display: flex; align-items: center; gap: 8px; }
-  .arrival-tl-label { width: 68px; flex-shrink: 0; display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--muted); letter-spacing: 0.04em; }
-  .arrival-tl-time { width: 72px; flex-shrink: 0; text-align: right; font-size: 9px; color: var(--muted); letter-spacing: 0.03em; white-space: nowrap; }
+  .arrival-tl-label { width: 120px; flex-shrink: 0; display: flex; align-items: center; gap: 5px; }
+  .arrival-tl-label-name { font-size: 9px; color: var(--muted); letter-spacing: 0.04em; }
+  .arrival-tl-label-time { font-size: 9px; color: var(--muted); letter-spacing: 0.03em; white-space: nowrap; }
   .arrival-tl-track {
     flex: 1; position: relative; height: 6px;
     background: var(--border); border-radius: 3px; overflow: visible;
@@ -209,7 +210,7 @@
   }
   .arrival-tl-axis {
     position: relative; height: 14px; margin-top: 5px;
-    margin-left: 76px; margin-right: 80px;
+    margin-left: 128px;
   }
   .arrival-tl-tick {
     position: absolute; font-size: 9px; color: var(--muted);
@@ -533,14 +534,13 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div> Billy</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div><span class="arrival-tl-label-name">Billy</span><span class="arrival-tl-label-time">04:28–05:01</span></div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="3"
              data-scale-start="240" data-scale-end="600">
           <div class="arrival-tl-bar" style="left:7.8%;width:9.2%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="5" style="--c:var(--jon);left:74.7%;width:17.8%"></div>
         </div>
-        <div class="arrival-tl-time">04:28–05:01</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
@@ -637,24 +637,22 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div> Billy</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div><span class="arrival-tl-label-name">Billy</span><span class="arrival-tl-label-time">08:29–09:33</span></div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="5"
              data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:5.4%;width:11.9%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="7" style="--c:var(--jon);left:42.2%;width:16.5%"></div>
         </div>
-        <div class="arrival-tl-time">08:29–09:33</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div> Danielle</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div><span class="arrival-tl-label-name">Danielle</span><span class="arrival-tl-label-time">11:12–11:51</span></div>
         <div class="arrival-tl-track"
              data-runner="danielle" data-idx="2"
              data-scale-start="480" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:35.6%;width:7.2%;background:var(--dan)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="4" style="--c:var(--dan);left:77.4%;width:13.7%"></div>
         </div>
-        <div class="arrival-tl-time">11:12–11:51</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
@@ -775,33 +773,30 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div> Billy</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div><span class="arrival-tl-label-name">Billy</span><span class="arrival-tl-label-time">11:48–13:17</span></div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="7"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:13.3%;width:24.7%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="9" style="--c:var(--jon);left:55.8%;width:29.7%"></div>
         </div>
-        <div class="arrival-tl-time">11:48–13:17</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-heather"></div> Heather</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-heather"></div><span class="arrival-tl-label-name">Heather</span><span class="arrival-tl-label-time">14:17–15:21</span></div>
         <div class="arrival-tl-track"
              data-runner="heather" data-idx="3"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:54.7%;width:17.8%;background:var(--heather)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="5" style="--c:var(--heather);left:77.2%;width:21.9%"></div>
         </div>
-        <div class="arrival-tl-time">14:17–15:21</div>
       </div>
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div> Danielle</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div><span class="arrival-tl-label-name">Danielle</span><span class="arrival-tl-label-time">14:58–16:12</span></div>
         <div class="arrival-tl-track"
              data-runner="danielle" data-idx="4"
              data-scale-start="660" data-scale-end="1020">
           <div class="arrival-tl-bar" style="left:66.1%;width:20.6%;background:var(--dan)"></div>
         </div>
-        <div class="arrival-tl-time">14:58–16:12</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
@@ -949,33 +944,30 @@
     <div class="arrival-tl-title">Expected arrivals</div>
     <div class="arrival-tl-rows">
       <div class="arrival-tl-row">
-        <div class="arrival-tl-label"><div class="swatch swatch-heather"></div> Heather</div>
+        <div class="arrival-tl-label"><div class="swatch swatch-heather"></div><span class="arrival-tl-label-name">Heather</span><span class="arrival-tl-label-time">15:38–16:57</span></div>
         <div class="arrival-tl-track"
              data-runner="heather" data-idx="5"
              data-scale-start="840" data-scale-end="1200">
           <div class="arrival-tl-bar" style="left:27.2%;width:21.9%;background:var(--heather)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="6" style="--c:var(--heather);left:41.7%;width:25%"></div>
         </div>
-        <div class="arrival-tl-time">15:38–16:57</div>
       </div>
-      <div class="arrival-tl-row">
-        <div class="arrival-tl-label" style="opacity:.5"><div class="swatch swatch-jon"></div> Billy</div>
+      <div class="arrival-tl-row" style="opacity:.5">
+        <div class="arrival-tl-label"><div class="swatch swatch-jon"></div><span class="arrival-tl-label-name">Billy</span><span class="arrival-tl-label-time">14:21–16:08</span></div>
         <div class="arrival-tl-track"
              data-runner="billy" data-idx="9"
              data-scale-start="840" data-scale-end="1200">
-          <div class="arrival-tl-bar" style="left:5.8%;width:29.7%;background:var(--jon);opacity:.4"></div>
+          <div class="arrival-tl-bar" style="left:5.8%;width:29.7%;background:var(--jon)"></div>
           <div class="arrival-tl-bar-next" data-next-idx="10" style="--c:var(--jon);left:33.3%;width:33.3%"></div>
         </div>
-        <div class="arrival-tl-time" style="opacity:.5">14:21–16:08</div>
       </div>
-      <div class="arrival-tl-row">
-        <div class="arrival-tl-label" style="opacity:.5"><div class="swatch swatch-dan"></div> Danielle</div>
+      <div class="arrival-tl-row" style="opacity:.5">
+        <div class="arrival-tl-label"><div class="swatch swatch-dan"></div><span class="arrival-tl-label-name">Danielle</span><span class="arrival-tl-label-time">18:03–19:45</span></div>
         <div class="arrival-tl-track"
              data-runner="danielle" data-idx="6"
              data-scale-start="840" data-scale-end="1200">
-          <div class="arrival-tl-bar" style="left:67.5%;width:28.3%;background:var(--dan);opacity:.4"></div>
+          <div class="arrival-tl-bar" style="left:67.5%;width:28.3%;background:var(--dan)"></div>
         </div>
-        <div class="arrival-tl-time" style="opacity:.5">18:03–19:45</div>
       </div>
     </div>
     <div class="arrival-tl-axis">
@@ -1299,7 +1291,7 @@ function updateRunnerMarkers(runner) {
     const t0 = RACE_DATA[runner].checkpoints[targetIdx].t[0];
     const t2 = RACE_DATA[runner].checkpoints[targetIdx].t[2];
 
-    const timeEl = track.parentElement ? track.parentElement.querySelector('.arrival-tl-time') : null;
+    const timeEl = track.parentElement ? track.parentElement.querySelector('.arrival-tl-label-time') : null;
 
     // ── Solid bar (arrival at this station) ──
     if (!latest || targetIdx <= latest.idx) {
