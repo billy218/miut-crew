@@ -109,30 +109,6 @@
   }
   .tracking-clear button:hover { border-color: var(--red); color: var(--red); }
 
-  /* ── Projection markers ── */
-  .arrival-tl-proj {
-    position: absolute; top: -7px; bottom: -7px; width: 2px;
-    transform: translateX(-50%); border-radius: 1px;
-    background: #fff;
-    box-shadow: 0 0 6px 1px rgba(255,255,255,0.4);
-    z-index: 3; pointer-events: none;
-  }
-  .arrival-tl-proj::before {
-    content: '';
-    position: absolute; bottom: calc(100% + 2px); left: 50%;
-    transform: translateX(-50%);
-    width: 0; height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 5px solid #fff;
-  }
-  .pace-strip-proj {
-    position: absolute; top: -5px; bottom: -5px; width: 2px;
-    transform: translateX(-50%); border-radius: 1px;
-    background: #fff;
-    box-shadow: 0 0 5px 1px rgba(255,255,255,0.35);
-    z-index: 3; pointer-events: none;
-  }
   .proj-time { padding: 2px 16px 8px; letter-spacing: 0.04em; }
   .proj-time strong { font-size: 14px; font-weight: 600; color: var(--accent); }
   .proj-time span { font-size: 10px; color: var(--muted); margin-left: 6px; }
@@ -552,7 +528,6 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop</span>
-      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
     <div class="arrival-tl-proj-times" id="ptimes-estanquinhos"></div>
   </div>
@@ -666,7 +641,6 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Chão da Lagoa)</span>
-      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
     <div class="arrival-tl-proj-times" id="ptimes-curral"></div>
   </div>
@@ -813,7 +787,6 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at next stop (Larano)</span>
-      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
     <div class="arrival-tl-proj-times" id="ptimes-lagoa"></div>
   </div>
@@ -987,7 +960,6 @@
     <div class="arrival-tl-legend">
       <span class="tl-legend-item"><span class="tl-legend-solid"></span> arrival here</span>
       <span class="tl-legend-item"><span class="tl-legend-dashed"></span> at finish (Machico)</span>
-      <span class="tl-legend-item"><span class="tl-legend-proj"></span> projected</span>
     </div>
     <div class="arrival-tl-proj-times" id="ptimes-larano"></div>
   </div>
@@ -1261,26 +1233,17 @@ function renderPaceStrip(track, projMin, projFinish) {
     }
   }
 
-  // ── Projection marker and label ──
-  let marker = track.querySelector('.pace-strip-proj');
+  // ── Projection label ──
   const projTimeEl = paceStrip ? paceStrip.nextElementSibling : null;
   const hasLabel   = projTimeEl && projTimeEl.classList.contains('proj-time');
-
-  if (projMin != null) {
-    if (!marker) {
-      marker = document.createElement('div');
-      marker.className = 'pace-strip-proj';
-      track.appendChild(marker);
-    }
-    marker.style.left = pct(projMin);
-    if (hasLabel) {
+  if (hasLabel) {
+    if (projMin != null) {
       const finHtml = projFinish != null
         ? `<span>finish ~${minToTime(projFinish)}</span>` : '';
       projTimeEl.innerHTML = `<strong>${minToTime(projMin)}</strong>${finHtml}`;
+    } else {
+      projTimeEl.innerHTML = '';
     }
-  } else {
-    if (marker) marker.remove();
-    if (hasLabel) projTimeEl.innerHTML = '';
   }
 }
 
@@ -1293,8 +1256,8 @@ function updateRunnerMarkers(runner) {
     const scaleStart = parseInt(track.dataset.scaleStart);
     const scaleEnd   = parseInt(track.dataset.scaleEnd);
     const span       = scaleEnd - scaleStart;
-    const bar        = track.querySelector('.arrival-tl-bar');
-    let   marker     = track.querySelector('.arrival-tl-proj');
+    const bar    = track.querySelector('.arrival-tl-bar');
+    const marker = track.querySelector('.arrival-tl-proj');
 
     const t0 = RACE_DATA[runner].checkpoints[targetIdx].t[0];
     const t2 = RACE_DATA[runner].checkpoints[targetIdx].t[2];
@@ -1310,23 +1273,14 @@ function updateRunnerMarkers(runner) {
       if (marker) marker.remove();
       if (timeEl) { timeEl.textContent = minToTime(t0) + '–' + minToTime(t2); timeEl.style.color = ''; }
     } else {
-      const proj    = projectTime(runner, latest.minutes, latest.idx, targetIdx);
-      const projPct = (proj - scaleStart) / span * 100;
+      const proj = projectTime(runner, latest.minutes, latest.idx, targetIdx);
       if (bar) {
         const bStart = Math.max(scaleStart, proj - 30);
         const bEnd   = Math.min(scaleEnd,   proj + 30);
         bar.style.left  = ((bStart - scaleStart) / span * 100).toFixed(1) + '%';
         bar.style.width = ((bEnd - bStart) / span * 100).toFixed(1) + '%';
       }
-      if (projPct < -2 || projPct > 102) { if (marker) marker.remove(); }
-      else {
-        if (!marker) {
-          marker = document.createElement('div');
-          marker.className = 'arrival-tl-proj';
-          track.appendChild(marker);
-        }
-        marker.style.left = Math.max(0, Math.min(100, projPct)).toFixed(1) + '%';
-      }
+      if (marker) marker.remove();
       if (timeEl) { timeEl.textContent = '~' + minToTime(proj); timeEl.style.color = 'var(--accent)'; }
     }
 
